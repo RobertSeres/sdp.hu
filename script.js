@@ -189,13 +189,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. Sticker Price Calculator
+    function getMultiplier(sqm) {
+        if (sqm <= 3) return 1.0;
+        const points = [
+            { x: 3, y: 1.0 },
+            { x: 5, y: 1.126337534 },
+            { x: 10, y: 1.231838922 },
+            { x: 20, y: 1.315605709 },
+            { x: 50, y: 1.406372449 },
+            { x: 100, y: 1.46491161 },
+            { x: 200, y: 1.517170858 }
+        ];
+        let p1, p2;
+        for (let i = 0; i < points.length - 1; i++) {
+            if (sqm <= points[i + 1].x) {
+                p1 = points[i];
+                p2 = points[i + 1];
+                break;
+            }
+        }
+        if (!p1) {
+            p1 = points[points.length - 2];
+            p2 = points[points.length - 1];
+        }
+        const logX = Math.log(sqm);
+        const logX1 = Math.log(p1.x);
+        const logX2 = Math.log(p2.x);
+        const t = (logX - logX1) / (logX2 - logX1);
+        return p1.y + t * (p2.y - p1.y);
+    }
+
     // 6. Sticker Price Calculator
     const calcWidth = document.getElementById('calc-width');
     const calcHeight = document.getElementById('calc-height');
     const calcQty = document.getElementById('calc-qty');
     const calcResult = document.getElementById('calc-result');
     const calcArea = document.getElementById('calc-area');
+    const calcUnitPrice = document.querySelector('#sticker-calculator .font-mono:nth-of-type(1)'); // We must target unit price properly, let's just keep calc-result accurate
 
     function calculatePrice() {
         if (!calcWidth || !calcHeight || !calcQty || !calcResult) return;
@@ -205,19 +235,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const qty = parseInt(calcQty.value) || 1;
 
         if (width > 0 && height > 0 && qty > 0) {
-            // Formula: (Width * Height / 10000) * Quantity * 4000
             const areaM2 = (width * height) / 10000;
-            const basePrice = 4000;
-            let total = Math.round(areaM2 * qty * basePrice);
+            const totalSqm = areaM2 * qty;
+            const basePrice = 5000;
+            const multiplier = getMultiplier(totalSqm);
+            const unitPrice = basePrice / multiplier;
+            let total = Math.round(totalSqm * unitPrice);
 
             if (calcArea) {
-                calcArea.textContent = areaM2.toFixed(2) + ' nm';
+                calcArea.textContent = totalSqm.toFixed(2) + ' nm';
+            }
+
+            // Try to update the unit price display
+            const unitPriceDisplay = document.querySelectorAll('#sticker-calculator .font-mono')[1];
+            if (unitPriceDisplay) {
+                unitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft';
             }
 
             calcResult.textContent = total.toLocaleString('hu-HU');
         } else {
             if (calcArea) {
                 calcArea.textContent = '0.00 nm';
+            }
+            const unitPriceDisplay = document.querySelectorAll('#sticker-calculator .font-mono')[1];
+            if (unitPriceDisplay) {
+                unitPriceDisplay.textContent = '5000 Ft';
             }
             calcResult.textContent = '0';
         }
@@ -269,17 +311,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (width > 0 && height > 0 && qty > 0) {
             const areaM2 = (width * height) / 10000;
-            const basePrice = 4000;
-            let total = Math.round(areaM2 * qty * basePrice);
+            const totalSqm = areaM2 * qty;
+            const basePrice = 5000;
+            const multiplier = getMultiplier(totalSqm);
+            const unitPrice = basePrice / multiplier;
+            let total = Math.round(totalSqm * unitPrice);
 
             if (lfArea) {
-                lfArea.textContent = areaM2.toFixed(2) + ' nm';
+                lfArea.textContent = totalSqm.toFixed(2) + ' nm';
             }
 
-            // Minimum price logic could be added here if needed, but not requested.
+            // Update unit price text element natively
+            const lfUnitPriceDisplay = document.querySelectorAll('#lf-calculator .font-mono')[1];
+            if (lfUnitPriceDisplay) {
+                lfUnitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
+            }
+
             lfResult.textContent = total.toLocaleString('hu-HU');
         } else {
             if (lfArea) lfArea.textContent = '0.00 nm';
+            const lfUnitPriceDisplay = document.querySelectorAll('#lf-calculator .font-mono')[1];
+            if (lfUnitPriceDisplay) {
+                lfUnitPriceDisplay.textContent = '5000 Ft/nm';
+            }
             lfResult.textContent = '0';
         }
     }
@@ -317,6 +371,83 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bpWidth && bpHeight && bpQty) {
         [bpWidth, bpHeight, bpQty].forEach(input => {
             input.addEventListener('input', calculateBCPrice);
+        });
+    }
+
+    // 9. Weatherproof Blueprint Calculator
+    const bpwWidth = document.getElementById('bp-w-width');
+    const bpwHeight = document.getElementById('bp-w-height');
+    const bpwQty = document.getElementById('bp-w-qty');
+    const bpwResult = document.getElementById('bp-w-result');
+
+    function calculateBCWeatherPrice() {
+        if (!bpwWidth || !bpwHeight || !bpwQty || !bpwResult) return;
+
+        const width = parseFloat(bpwWidth.value) || 0;
+        const height = parseFloat(bpwHeight.value) || 0;
+        const qty = parseInt(bpwQty.value) || 1;
+
+        if (width > 0 && height > 0 && qty > 0) {
+            // Formula in meters: Width * Height = sqm
+            const totalSqm = width * height * qty;
+            const basePrice = 5000;
+            const multiplier = getMultiplier(totalSqm);
+            const unitPrice = basePrice / multiplier;
+            let total = Math.round(totalSqm * unitPrice);
+
+            // Update unit price text element natively
+            const bpwUnitPriceDisplay = document.querySelectorAll('#bp-weather-calculator .font-mono')[3];
+            if (bpwUnitPriceDisplay) {
+                bpwUnitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
+            }
+
+            bpwResult.textContent = total.toLocaleString('hu-HU');
+        } else {
+            const bpwUnitPriceDisplay = document.querySelectorAll('#bp-weather-calculator .font-mono')[3];
+            if (bpwUnitPriceDisplay) {
+                bpwUnitPriceDisplay.textContent = '5000 Ft/nm';
+            }
+            bpwResult.textContent = '0';
+        }
+    }
+
+    if (bpwWidth && bpwHeight && bpwQty) {
+        [bpwWidth, bpwHeight, bpwQty].forEach(input => {
+            input.addEventListener('input', calculateBCWeatherPrice);
+        });
+    }
+
+    // 10. Blueprint Tabs Logic
+    const tabPaperBtn = document.getElementById('bp-tab-paper');
+    const tabWeatherBtn = document.getElementById('bp-tab-weather');
+    const contentPaper = document.getElementById('bp-content-paper');
+    const contentWeather = document.getElementById('bp-content-weather');
+
+    if (tabPaperBtn && tabWeatherBtn) {
+        tabPaperBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Button styles
+            tabPaperBtn.className = "bp-tab-btn active py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all bg-cyan-500 text-white shadow-lg";
+            tabWeatherBtn.className = "bp-tab-btn py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all text-gray-400 hover:text-white hover:bg-white/10";
+
+            // Content visibility
+            contentPaper.classList.remove('hidden');
+            contentPaper.classList.add('flex');
+            contentWeather.classList.add('hidden');
+            contentWeather.classList.remove('flex');
+        });
+
+        tabWeatherBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Button styles
+            tabWeatherBtn.className = "bp-tab-btn active py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all bg-purple-500 text-white shadow-lg";
+            tabPaperBtn.className = "bp-tab-btn py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all text-gray-400 hover:text-white hover:bg-white/10";
+
+            // Content visibility
+            contentWeather.classList.remove('hidden');
+            contentWeather.classList.add('flex');
+            contentPaper.classList.add('hidden');
+            contentPaper.classList.remove('flex');
         });
     }
 

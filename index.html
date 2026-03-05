@@ -81,10 +81,6 @@
               class="px-5 py-3 text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">
               Kontúrvágás, Matricakészítés
             </a>
-            <a href="#gyorsnyomda"
-              class="px-5 py-3 text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">
-              Gyorsnyomda
-            </a>
             <a href="#nagyformatum"
               class="px-5 py-3 text-gray-300 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5">
               Nagy-formátumú nyomtatás
@@ -122,8 +118,6 @@
         <a href="#konturvagas"
           class="mobile-link text-lg text-gray-400 hover:text-white transition-colors uppercase">Kontúrvágás,
           Matricakészítés</a>
-        <a href="#gyorsnyomda"
-          class="mobile-link text-lg text-gray-400 hover:text-white transition-colors uppercase">Gyorsnyomda</a>
         <a href="#nagyformatum"
           class="mobile-link text-lg text-gray-400 hover:text-white transition-colors uppercase">Nagy-formátumú
           nyomtatás</a>
@@ -140,91 +134,55 @@
   <section id="home" class="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden">
     <!-- Background blobls -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-pulse-slow"
-        style="animation-delay: 1s;"></div>
+      <!-- Animated gradient background -->
+      <div class="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-black/50 to-cyan-900/30 animate-pulse-slow">
+      </div>
 
-      <!-- Particles container (Enhanced Canvas) -->
-      <canvas id="hero-canvas" class="absolute inset-0 w-full h-full"></canvas>
+      <!-- Moving colored blobs - Z-index adjusted to show above dark background -->
+      <div
+        class="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] bg-purple-600/30 rounded-full blur-[100px] animate-[float_8s_ease-in-out_infinite] z-0">
+      </div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-[40rem] h-[40rem] bg-cyan-600/30 rounded-full blur-[100px] animate-[float_12s_ease-in-out_infinite_reverse] z-0"
+        style="animation-delay: 2s;"></div>
+      <div
+        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-pink-600/20 rounded-full blur-[80px] animate-[pulse_6s_ease-in-out_infinite] z-0">
+      </div>
+
+      <canvas id="hero-canvas" class="absolute inset-0 w-full h-full opacity-50 z-10 mix-blend-screen"></canvas>
     </div>
 
-    <div class="container mx-auto px-4 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div class="opacity-0 translate-y-8 animate-on-scroll">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight font-display">
+    <div class="container mx-auto px-4 relative z-20 flex flex-col items-center text-center max-w-4xl pt-10">
+      <div class="opacity-0 translate-y-8 animate-on-scroll flex flex-col items-center w-full">
+        <!-- Logo instead of Text -->
+        <img src="logo.png" alt="SDP Logo"
+          class="w-auto h-24 md:h-32 mb-6 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+
+        <h1 class="text-3xl md:text-5xl font-bold mb-4 font-display">
           <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-gray-400">
-            SDP Gyorsnyomda
+            Budafoki
           </span>
-          <br />
-          <span class="text-3xl md:text-5xl text-cyan-400 font-normal block mt-2">
-            Budapest
+          <span class="text-cyan-400">
+            matricagyár
           </span>
         </h1>
 
-        <div class="space-y-4 text-gray-300 mb-8 max-w-xl text-lg leading-relaxed">
-          <p>
-            Cégünk 1999-ben alakult. Akkoriban DTP-s kiadványszerkesztési munkáink voltak javarészt.
-          </p>
-          <p>
-            2006-ban tettünk szert hagyományos nyomdagépre, de hamar kiderül, hogy az már a múlté.
-          </p>
-          <p>
-            Azóta nyomdagépünket digitálisra cseréltük, amivel gyorsabban és hatékonyabban és jobb minőségben tudunk
-            dolgozni.
-          </p>
-        </div>
+        <p class="text-xl md:text-2xl text-gray-300 mb-10 font-medium tracking-wide">
+          Ha nyomtatás, akkor SDP
+        </p>
 
-        <div class="flex flex-wrap gap-4">
-          <a href="#services" class="btn btn-primary px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center">
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="#services"
+            class="btn btn-primary px-8 py-4 rounded-lg font-medium text-lg inline-flex items-center hover:scale-105 transition-transform shadow-[0_0_20px_rgba(6,182,212,0.3)]">
             Szolgáltatásaink <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
           </a>
-          <a href="#contact" class="btn btn-outline px-8 py-4 rounded-lg font-medium text-lg">
+          <a href="#contact"
+            class="btn btn-outline px-8 py-4 rounded-lg font-medium text-lg hover:scale-105 transition-transform">
             Árajánlatkérés
           </a>
         </div>
       </div>
-
-      <!-- Floating Cards (Hero Features) -->
-      <div class="relative h-[800px] hidden lg:block perspective-container">
-        <!-- Gyorsnyomda Card -->
-        <div class="floating-card absolute top-[10%] right-[10%] w-80 p-6 glass rounded-xl animate-float"
-          style="animation-delay: 0s;">
-          <div class="p-3 bg-cyan-500/10 rounded-full w-fit mb-4">
-            <i data-lucide="printer" class="w-8 h-8 text-cyan-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">Gyorsnyomda</h3>
-          <p class="text-sm text-gray-300 leading-relaxed">
-            Rugalmasan alkalmazkodunk az Ön igényeihez, hogy a reklámanyag vagy a névjegy, levélpapír, szórólap, plakát,
-            prospektus és egyéb nyomdatermék készítés rövid határidőn belül, kedvező áron és kiváló minőségben készüljön
-            el.
-          </p>
-        </div>
-
-        <!-- Matricakészítés Card -->
-        <div class="floating-card absolute top-[40%] right-[calc(35%+160px)] w-80 p-6 glass rounded-xl animate-float"
-          style="animation-delay: 1.5s; z-index: 2;">
-          <div class="p-3 bg-purple-500/10 rounded-full w-fit mb-4">
-            <i data-lucide="sticker" class="w-8 h-8 text-purple-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">Matricakészítés</h3>
-          <p class="text-sm text-gray-300 leading-relaxed">
-            Mi – szokásostól eltérően – színes lézer berendezéssel gyártjuk a matricákat. Előnye, hogy sokkal nagyobb
-            felbontásban nyomtatjuk és a színek is élénkebbek, mint a nagy formátumú nyomtatók esetében.
-          </p>
-        </div>
-
-        <!-- Kontúrvágás Card -->
-        <div class="floating-card absolute top-[70%] right-[10%] w-80 p-6 glass rounded-xl animate-float"
-          style="animation-delay: 3s;">
-          <div class="p-3 bg-cyan-500/10 rounded-full w-fit mb-4">
-            <i data-lucide="scissors" class="w-8 h-8 text-cyan-400"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-3">Kontúrvágás</h3>
-          <p class="text-sm text-gray-300 leading-relaxed">
-            Korszerű kontúrvágó berendezésünkkel a matricát akár teljesen kivágjuk, akár csak a kontúroknál ricceljük,
-            kontúr vágjuk.
-          </p>
-        </div>
-      </div>
+    </div>
     </div>
   </section>
 
@@ -240,29 +198,26 @@
           </div>
           <div>
             <span class="block text-white font-bold text-sm">Matrica</span>
-            <span class="text-xs text-gray-500 group-hover:text-pink-400 transition-colors">Kontúrvágás</span>
           </div>
         </a>
 
-        <!-- Gyorsnyomda -->
-        <a href="#gyorsnyomda" class="group flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors">
-          <div class="p-2 bg-cyan-900/30 rounded-lg text-cyan-400 group-hover:scale-110 transition-transform">
-            <i data-lucide="printer" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <span class="block text-white font-bold text-sm">Gyorsnyomda</span>
-            <span class="text-xs text-gray-500 group-hover:text-cyan-400 transition-colors">Digitális & Ofszet</span>
-          </div>
-        </a>
-
-        <!-- Nagyformátum -->
+        <!-- Molinó -->
         <a href="#nagyformatum" class="group flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors">
-          <div class="p-2 bg-purple-900/30 rounded-lg text-purple-400 group-hover:scale-110 transition-transform">
+          <div class="p-2 bg-cyan-900/30 rounded-lg text-cyan-400 group-hover:scale-110 transition-transform">
             <i data-lucide="image" class="w-5 h-5"></i>
           </div>
           <div>
-            <span class="block text-white font-bold text-sm">Nagyformátum</span>
-            <span class="text-xs text-gray-500 group-hover:text-purple-400 transition-colors">Molinó & Vinyl</span>
+            <span class="block text-white font-bold text-sm">Molinó</span>
+          </div>
+        </a>
+
+        <!-- Plakát -->
+        <a href="#nagyformatum" class="group flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors">
+          <div class="p-2 bg-purple-900/30 rounded-lg text-purple-400 group-hover:scale-110 transition-transform">
+            <i data-lucide="layout-template" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <span class="block text-white font-bold text-sm">Plakát</span>
           </div>
         </a>
 
@@ -273,7 +228,6 @@
           </div>
           <div>
             <span class="block text-white font-bold text-sm">Tervrajz</span>
-            <span class="text-xs text-gray-500 group-hover:text-blue-400 transition-colors">Műszaki rajzok</span>
           </div>
         </a>
 
@@ -288,62 +242,82 @@
     </div>
 
     <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-20">
-        <div class="opacity-0 translate-y-8 animate-on-scroll">
+      <div class="mb-20">
+        <div class="opacity-0 translate-y-8 animate-on-scroll mb-16 flex flex-col items-center text-center">
           <h2
             class="text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 font-display">
             Rólunk
           </h2>
-          <div class="space-y-6 text-gray-300 text-lg leading-relaxed">
+          <div class="space-y-6 text-gray-300 text-lg leading-relaxed max-w-4xl mx-auto">
             <p>
-              Cégünk 1999-ben alakult. Akkoriban DTP-s kiadványszerkesztési munkáink voltak javarészt. 2006-ban tettünk
-              szert hagyományos nyomdagépre, de hamar kiderül, hogy az már a múlté. Azóta nyomdagépünket digitálisra
-              cseréltük, amivel gyorsabban és hatékonyabban és jobb minőségben tudunk dolgozni.
+              Cégünk a 90-es években alakult. Kezdetben kiadványszerkesztéssel és gyorsnyomdai szolgáltatásokkal
+              foglalkoztunk, jelenleg azonban fő profilunk a matrica- és molinógyártás.
             </p>
-            <div class="glass p-6 border-l-4 border-l-purple-500 bg-purple-900/20 rounded-r-xl">
+            <div class="glass p-6 border border-purple-500/50 bg-purple-900/20 rounded-xl">
               <p class="italic text-gray-200">
-                "Célunk környékbeli cégek és magánszemélyek magas színvonalú kiszolgálása, ami nem azt jelenti, hogy
-                messzebbről nem fogadunk el megbízást (USA-ból, Angliából, Németországból is kaptunk már megrendelést).
-                Gyorsnyomdánkra nem mai stúdió jellegű, hanem sokkal inkább családi vállalkozásként üzemel, ezért tudunk
-                megrendelést fogadni akár hétvégén is, amikor jórészt egy nagy üzlethálózat üzemel igen magas áron. Mi
-                ezzel szemben kedvező árainkkal, minőségi munkával igyekszünk versenyképesek maradni."
+                Célunk, hogy a környékbeli kisebb és nagyobb vállalkozások, valamint magánszemélyek számára
+                megbízható,
+                magas színvonalú szolgáltatást nyújtsunk.
               </p>
             </div>
           </div>
         </div>
 
         <!-- Service Lists -->
-        <div id="services" class="space-y-6 opacity-0 translate-y-8 animate-on-scroll" style="transition-delay: 200ms;">
-          <!-- Ofszet -->
-          <div class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">
-            <h3 class="text-xl font-bold text-purple-400 mb-3 uppercase flex items-center gap-2">
-              <i data-lucide="layers" class="w-5 h-5"></i> Ofszetnyomás
+        <div id="services" class="grid grid-cols-1 md:grid-cols-2 gap-8 opacity-0 translate-y-8 animate-on-scroll"
+          style="transition-delay: 200ms;">
+          <!-- Matricagyártás -->
+          <a href="#konturvagas"
+            class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-all hover:scale-105 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] group block relative scroll-mt-32 cursor-pointer z-10 text-left">
+            <h3
+              class="text-xl font-bold text-white mb-3 uppercase flex items-center gap-2 group-hover:text-cyan-400 transition-colors">
+              <i data-lucide="sticker" class="w-5 h-5 text-cyan-400"></i> Matricagyártás
             </h3>
             <p class="text-sm text-gray-400">
-              szórólapok, flyerek, brosúrák, plakátok, katalógusok, könyvek, folyóiratok, termékcímkék, füzetek,
-              újságok, mappák, termékismertetők, termékkártyák, belépők, sorsjegyek, stagepass
+              Tetszőleges méretű, formájú színes műanyag alapanyagú matricát tudunk készíteni kis és nagy
+              példányszámban
+              egyaránt. Egyedi matrica termékre, csomagolásra, stb. rövid határidővel. Az elkészült anyagot tudjuk
+              laminálni, táblára kasírozni, üvegre rakni (One Way Vision ablakfólia).
             </p>
-          </div>
-          <!-- Matrica -->
-          <div class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">
-            <h3 class="text-xl font-bold text-cyan-400 mb-3 uppercase flex items-center gap-2">
-              <i data-lucide="scissors" class="w-5 h-5"></i> Matrica & Kontúrvágás
+          </a>
+          <!-- Molinógyártás -->
+          <a href="#nagyformatum"
+            class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-all hover:scale-105 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] group block relative scroll-mt-32 cursor-pointer z-10 text-left">
+            <h3
+              class="text-xl font-bold text-white mb-3 uppercase flex items-center gap-2 group-hover:text-purple-400 transition-colors">
+              <i data-lucide="image" class="w-5 h-5 text-purple-400"></i> Molinógyártás
             </h3>
             <p class="text-sm text-gray-400">
-              Vinyl, öntapadó fólia, öntapadó matrica gyártás, autódekor, üvegcímke, üvegmatrica, termékcímkék, fali
-              matrica, gyermek matrica
+              Molinónk a legmagasabb minőségi elvárásoknak megfelelően készül, évekig ellenáll az időjárás
+              viszontagságainak. Egyedileg szegjük, ringlizzük, hogy a szélnek is ellen tudjon állni. Rövid
+              határidővel
+              is tudjuk vállalni.
             </p>
-          </div>
-          <!-- Digitális -->
-          <div class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-colors">
-            <h3 class="text-xl font-bold text-white mb-3 uppercase flex items-center gap-2">
-              <i data-lucide="printer" class="w-5 h-5"></i> Digitális nyomtatás
+          </a>
+          <!-- Plakátnyomtatás -->
+          <a href="#nagyformatum"
+            class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-all hover:scale-105 hover:border-pink-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.15)] group block relative scroll-mt-32 cursor-pointer z-10 text-left">
+            <h3
+              class="text-xl font-bold text-white mb-3 uppercase flex items-center gap-2 group-hover:text-pink-400 transition-colors">
+              <i data-lucide="layout-template" class="w-5 h-5 text-pink-400"></i> Plakátnyomtatás
             </h3>
             <p class="text-sm text-gray-400">
-              Kis példányszámú, különleges igényekhez, egyediesített naptárak, meghívók, szóróanyagok, névjegykártyák
-              (akár szitanyomással is), Füzet, Szórólap (színes v. fekete-fehér), Újság, Könyv
+              Beltéri dekorációs célra kiváló minőségű nyomatot tudunk készíteni akár nagy felbontásban is.
             </p>
-          </div>
+          </a>
+          <!-- Tervrajznyomtatás -->
+          <a href="#tervrajz"
+            class="glass p-6 rounded-xl border border-white/10 hover:bg-white/5 transition-all hover:scale-105 hover:border-blue-500/50 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] group block relative scroll-mt-32 cursor-pointer z-10 text-left">
+            <h3
+              class="text-xl font-bold text-white mb-3 uppercase flex items-center gap-2 group-hover:text-blue-400 transition-colors">
+              <i data-lucide="ruler" class="w-5 h-5 text-blue-400"></i> Tervrajznyomtatás
+            </h3>
+            <p class="text-sm text-gray-400">
+              Mi nem csak tervrajzpapírra, hanem időjárás álló vászonra is tudjuk nyomni, ami nagymértékben ellenáll
+              az
+              építkezésen lévő viszonyoknak: nem ázik el, nem szakad, stb.
+            </p>
+          </a>
         </div>
       </div>
 
@@ -353,10 +327,7 @@
         <div class="flex flex-wrap justify-center gap-3">
           <span
             class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Hensel
-            Hungária Kft.</span>
-          <span
-            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">RTL
-            Klub</span>
+            Hungária Kft</span>
           <span
             class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Barátok
             Közt Stúdió</span>
@@ -368,148 +339,22 @@
             Nails</span>
           <span
             class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Pista
-            Néni Söröző</span>
-          <span
-            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Biobolt22
-            Budafoki Egészségközpont</span>
+            Néni söröző</span>
           <span
             class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Ecogarden
             Kft.</span>
           <span
-            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Reménysugár
-            Habilitációs Intézet</span>
+            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Korrekt
+            lift Kft.</span>
+          <span
+            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Dogbox</span>
+          <span
+            class="px-4 py-2 bg-white/5 rounded-full text-sm text-gray-300 border border-white/10 hover:bg-white/10 transition-colors">Irtójóirtás
+            Kft.</span>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 opacity-0 translate-y-8 animate-on-scroll">
-        <div class="glass p-6 rounded-xl text-center">
-          <div class="text-4xl font-bold text-cyan-400 font-display mb-2">320</div>
-          <div class="text-sm text-gray-400 uppercase tracking-wider">Magazin, füzet</div>
-        </div>
-        <div class="glass p-6 rounded-xl text-center">
-          <div class="text-4xl font-bold text-purple-400 font-display mb-2">299</div>
-          <div class="text-sm text-gray-400 uppercase tracking-wider">Nagyméretű plakát</div>
-        </div>
-        <div class="glass p-6 rounded-xl text-center">
-          <div class="text-4xl font-bold text-cyan-400 font-display mb-2">150</div>
-          <div class="text-sm text-gray-400 uppercase tracking-wider">Publikált könyv</div>
-        </div>
-        <div class="glass p-6 rounded-xl text-center">
-          <div class="text-4xl font-bold text-purple-400 font-display mb-2">1100</div>
-          <div class="text-sm text-gray-400 uppercase tracking-wider">Molinó</div>
-        </div>
-      </div>
 
-      <!-- Timeline -->
-      <div class="max-w-4xl mx-auto opacity-0 translate-y-8 animate-on-scroll">
-        <h3
-          class="text-3xl font-bold text-center mb-12 font-display bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-          Cégünk rövid története</h3>
-
-        <div class="relative border-l-2 border-white/10 ml-4 md:ml-1/2 space-y-12">
-
-          <!-- 2015 -->
-          <div class="relative pl-8 md:pl-0">
-            <div
-              class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.5)]">
-            </div>
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-start">
-              <div class="hidden md:block text-right pr-8">
-                <span class="text-2xl font-bold text-cyan-400">Június 2015</span>
-              </div>
-              <div class="md:hidden mb-2">
-                <span class="text-xl font-bold text-cyan-400">Június 2015</span>
-              </div>
-              <div class="glass p-6 rounded-xl">
-                <p class="text-gray-300">
-                  Gyorsnyomdánkra nem mai stúdió jellegű, hanem sokkal inkább családi vállalkozásként üzemel, ezért
-                  tudunk megrendelést fogadni akár hétvégén is.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2010 -->
-          <div class="relative pl-8 md:pl-0">
-            <div
-              class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.5)]">
-            </div>
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-start">
-              <div class="hidden md:block text-right pr-8">
-                <span class="text-2xl font-bold text-purple-400">Február 2010</span>
-              </div>
-              <div class="md:hidden mb-2">
-                <span class="text-xl font-bold text-purple-400">Február 2010</span>
-              </div>
-              <div class="glass p-6 rounded-xl">
-                <p class="text-gray-300">
-                  Azóta nyomdagépünket digitálisra cseréltük, amivel gyorsabban és hatékonyabban és jobb minőségben
-                  tudunk dolgozni.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2006 -->
-          <div class="relative pl-8 md:pl-0">
-            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white/20"></div>
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-start">
-              <div class="hidden md:block text-right pr-8">
-                <span class="text-xl font-bold text-gray-400">Április 2006</span>
-              </div>
-              <div class="md:hidden mb-2">
-                <span class="text-lg font-bold text-gray-400">Április 2006</span>
-              </div>
-              <div class="glass p-6 rounded-xl">
-                <p class="text-gray-400">
-                  2006-ban tettünk szert hagyományos nyomdagépre, de hamar kiderül, hogy az már a múlté.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 2004 -->
-          <div class="relative pl-8 md:pl-0">
-            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white/20"></div>
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-start">
-              <div class="hidden md:block text-right pr-8">
-                <span class="text-xl font-bold text-gray-400">Május 2004</span>
-              </div>
-              <div class="md:hidden mb-2">
-                <span class="text-lg font-bold text-gray-400">Május 2004</span>
-              </div>
-              <div class="glass p-6 rounded-xl">
-                <p class="text-gray-400 mb-2">
-                  DTP-s kiadványszerkesztési munkák.
-                </p>
-                <p class="text-sm text-gray-500 italic">
-                  Magyar horgász, Móricka, PC-x magazin, PC Guru, Esküvő magazin
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- 1999 -->
-          <div class="relative pl-8 md:pl-0">
-            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-white/20"></div>
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-start">
-              <div class="hidden md:block text-right pr-8">
-                <span class="text-xl font-bold text-gray-400">Március 1999</span>
-              </div>
-              <div class="md:hidden mb-2">
-                <span class="text-lg font-bold text-gray-400">Március 1999</span>
-              </div>
-              <div class="glass p-6 rounded-xl">
-                <p class="text-gray-400">
-                  Cégünk megalakult.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
       <!-- Testimonials -->
       <div class="max-w-3xl mx-auto opacity-0 translate-y-8 animate-on-scroll mt-10">
@@ -520,7 +365,59 @@
             Ügyfélszolgálatuk mindig elérhető, megbízható, az esetlegesen felmerülő problémákat gyorsan megoldják.”
           </p>
           <div class="text-right">
-            <span class="text-cyan-400 font-bold block">Seres Tibor - LMM </span>
+            <span class="text-cyan-400 font-bold block">Seres Tibor </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Termékeink List -->
+      <div class="mt-20 opacity-0 translate-y-8 animate-on-scroll">
+        <h3 class="text-3xl font-bold text-white mb-8 text-center font-display">Termékeink</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-cyan-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Termékmatrica webáruházak számára;</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-purple-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Mézes, csilipaprikás, boros és egyéb üvegekre matrica</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-pink-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Céges logó, vonalkód, qr kód dobozra, csomagolásra</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-cyan-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Autódekoráció, mágnesmatrica.</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-yellow-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Színes, arany, ezüst fóliavágás</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-blue-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Információs táblák</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-cyan-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Molinó hirdetési felület</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-purple-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Plakátnyomtatás kiváló minőségben</span>
+          </div>
+          <div
+            class="flex items-start gap-4 glass p-4 rounded-xl border border-white/5 hover:bg-white/5 transition-colors">
+            <i data-lucide="check-circle" class="w-6 h-6 text-pink-400 shrink-0 mt-0.5"></i>
+            <span class="text-gray-300">Tervrajznyomtatás papírra és időjárásálló anyagra is.</span>
           </div>
         </div>
       </div>
@@ -547,11 +444,8 @@
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-        <!-- Features & Pricing -->
-        <div class="space-y-8 opacity-0 translate-y-8 animate-on-scroll">
-
-
-
+        <!-- Left Column: Info & Features -->
+        <div class="space-y-8 flex flex-col h-full">
           <!-- Key Features -->
           <div class="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
             <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -583,10 +477,10 @@
 
           <!-- Pricing & Offer -->
           <div
-            class="bg-gradient-to-r from-cyan-900/40 to-purple-900/40 border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            class="bg-gradient-to-r from-cyan-900/40 to-purple-900/40 border border-white/10 rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 mt-auto">
             <div>
               <div class="text-sm text-gray-400 uppercase tracking-wider mb-1">Kiemelt ajánlat</div>
-              <div class="text-3xl font-bold text-white">4.000 Ft <span class="text-lg text-gray-400 font-normal">/
+              <div class="text-3xl font-bold text-white">5.000 Ft <span class="text-lg text-gray-400 font-normal">/
                   m²-től</span></div>
             </div>
             <div class="text-right md:text-left">
@@ -597,9 +491,9 @@
             </div>
           </div>
 
-          <!-- Secondary Image (Added here) -->
+          <!-- Secondary Image -->
           <div
-            class="rounded-2xl overflow-hidden border border-white/10 shadow-xl opacity-0 translate-y-8 animate-on-scroll max-w-md"
+            class="rounded-2xl overflow-hidden border border-white/10 shadow-xl opacity-0 translate-y-8 animate-on-scroll max-w-sm mx-auto"
             style="transition-delay: 300ms;">
             <img src="./input_file.04.png" alt="Matrica minta" class="w-full h-auto object-cover">
           </div>
@@ -640,7 +534,7 @@
                 </div>
                 <div class="flex justify-between items-center text-sm">
                   <span class="text-gray-400">Egységár:</span>
-                  <span class="text-white font-mono">4000.00 Ft</span>
+                  <span class="text-white font-mono">5000.00 Ft</span>
                 </div>
                 <div class="flex justify-between items-end mt-4 pt-2 border-t border-white/5">
                   <span class="text-gray-300 font-bold">Becsült ár:</span>
@@ -661,222 +555,19 @@
 
           <!-- Preview Image (Inside right column wrapper) -->
           <div
-            class="rounded-2xl overflow-hidden border border-white/10 shadow-xl mt-8 opacity-0 translate-y-8 animate-on-scroll max-w-md"
+            class="rounded-2xl overflow-hidden border border-white/10 shadow-xl opacity-0 translate-y-8 animate-on-scroll max-w-sm mx-auto mt-8"
             style="transition-delay: 300ms;">
             <img src="./input_file.05.png" alt="Egyedi Matricák" class="w-full h-auto object-cover">
           </div>
         </div>
       </div>
 
-      <!-- Usage Tips Cards -->
-      <div class="opacity-0 translate-y-8 animate-on-scroll">
-        <h3 class="text-2xl font-bold text-white mb-8 text-center">Felhasználási tippek</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="glass p-6 rounded-xl text-center group hover:bg-white/5 transition-all">
-            <div
-              class="w-12 h-12 bg-cyan-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <i data-lucide="tag" class="text-cyan-400 w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white mb-2">Termékcímkék</h4>
-            <p class="text-sm text-gray-400">Borosüveg, befőtt, kézműves termékek egyedi feliratozása.</p>
-          </div>
-
-          <div class="glass p-6 rounded-xl text-center group hover:bg-white/5 transition-all">
-            <div
-              class="w-12 h-12 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <i data-lucide="building" class="text-purple-400 w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white mb-2">Céges logók</h4>
-            <p class="text-sm text-gray-400">Logózott borítékok, dobozok, csomagolás.</p>
-          </div>
-
-          <div class="glass p-6 rounded-xl text-center group hover:bg-white/5 transition-all">
-            <div
-              class="w-12 h-12 bg-cyan-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <i data-lucide="car" class="text-cyan-400 w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white mb-2">Autó & Tábla</h4>
-            <p class="text-sm text-gray-400">Tartós autódekoráció, mágnesmatricák, információs táblák.</p>
-          </div>
-
-          <div class="glass p-6 rounded-xl text-center group hover:bg-white/5 transition-all">
-            <div
-              class="w-12 h-12 bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-              <i data-lucide="gem" class="text-yellow-400 w-6 h-6"></i>
-            </div>
-            <h4 class="font-bold text-white mb-2">Prémium fóliák</h4>
-            <p class="text-sm text-gray-400">Arany, ezüst fóliavágás exkluzív megjelenésért.</p>
-          </div>
-        </div>
-
-      </div>
-
-
-
-      <!-- Usage Tips Cards -->
-
-
-    </div>
-
-  </section>
-
-  <section id="gyorsnyomda" class="py-20">
-    <div class="container mx-auto px-4 relative z-10">
-
-      <!-- Hero / Intro -->
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
-        <div class="lg:w-1/2 opacity-0 translate-x-[-20px] animate-on-scroll">
-          <div
-            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-900/30 border border-purple-500/30 text-purple-300 text-sm mb-6">
-            <i data-lucide="map-pin" class="w-4 h-4"></i>
-            Budapest XXII. Kerület, Savoya bevásárlóközpont közelében
-          </div>
-          <h2
-            class="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-cyan-400 font-display">
-            Gyorsnyomda <span class="text-2xl block mt-2 text-white font-normal">(digitális és ofszetnyomda)</span>
-          </h2>
-          <p class="text-xl text-gray-300 leading-relaxed mb-6">
-            Rugalmasan alkalmazkodunk az Ön igényeihez, hogy a reklámanyag vagy a névjegy, levélpapír, szórólap, plakát,
-            prospektus és egyéb nyomdatermék készítés rövid határidőn belül, kedvező áron és kiváló minőségben készüljön
-            el.
-          </p>
-          <div class="flex items-center gap-2 text-cyan-400 font-medium">
-            <i data-lucide="pen-tool" class="w-5 h-5"></i>
-            Az anyagok grafikai tervezését is vállaljuk.
-          </div>
-        </div>
-        <div class="lg:w-1/2 opacity-0 translate-x-[20px] animate-on-scroll">
-          <!-- Abstract decorative visual -->
-          <div
-            class="relative w-full aspect-video rounded-2xl overflow-hidden glass border border-white/10 flex items-center justify-center group">
-            <div
-              class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-cyan-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none">
-            </div>
-            <img src="./input_file.06.png" alt="Gyorsnyomda"
-              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
-          </div>
-        </div>
-      </div>
-
-      <!-- Pricing Philosophy -->
-      <div
-        class="glass p-8 md:p-12 rounded-3xl border-l-4 border-l-purple-500 mb-20 opacity-0 translate-y-8 animate-on-scroll relative overflow-hidden">
-        <div class="absolute -right-20 -top-20 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl pointer-events-none">
-        </div>
-
-        <div class="relative z-10">
-          <h3 class="text-2xl font-bold text-white mb-4">Miért nincs fix árlistánk?</h3>
-          <p class="text-gray-300 mb-6 text-lg">
-            Nyomdászatban el lehet mondani, hogy nincs két egyforma munka, mind más és más papírra, más méretben, más
-            példányszámban... ezért nem készítettünk általános árlistát.
-          </p>
-          <blockquote class="border-l-2 border-cyan-500 pl-4 italic text-gray-400 mb-8">
-            "Sajnos a nyomdász szakmában mindenkinél van olcsóbb, aláígérni mi senki alá nem fogunk."
-          </blockquote>
-
-          <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/5 p-6 rounded-xl">
-            <p class="text-gray-300 text-sm">
-              Amennyiben szüksége van valamire, írja meg paramétereit és rövid időn belül válaszolunk rá. Egy e-mailt
-              mindenképp megér, igyekszünk legjobb árat adni.
-            </p>
-            <a href="#contact"
-              class="btn btn-primary whitespace-nowrap px-8 py-3 rounded-lg font-bold hover:scale-105 transition-transform">
-              Ajánlatkérés
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Technology Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-        <!-- Card A: Digital -->
-        <div
-          class="glass p-8 rounded-2xl border border-white/5 hover:border-cyan-500/50 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl opacity-0 translate-y-8 animate-on-scroll group"
-          style="transition-delay: 100ms;">
-          <div
-            class="w-14 h-14 bg-cyan-900/30 rounded-xl flex items-center justify-center mb-6 text-cyan-400 group-hover:scale-110 transition-transform">
-            <i data-lucide="printer" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-1">Digitális Nyomda</h3>
-          <div class="text-sm text-cyan-300 font-medium mb-4 uppercase tracking-wider">Kis példányszámhoz ideális</div>
-          <p class="text-gray-400 text-sm mb-6 min-h-[60px]">
-            Kis példányszámú színes és fekete-fehér munkákhoz a legideálisabb. Itt nincs lemez és beállási költség.
-          </p>
-
-          <div class="bg-black/30 p-4 rounded-lg mb-6">
-            <div class="text-xs text-gray-500 uppercase mb-1">Használat</div>
-            <p class="text-gray-300 text-sm">Ha ma szüksége van néhány darab meghívóra, akkor ez a megoldás.</p>
-          </div>
-
-          <div class="pt-4 border-t border-white/10">
-            <div class="text-lg font-bold text-white mb-1">50-100 Ft <span
-                class="text-sm font-normal text-gray-400">(+áfa)</span></div>
-            <div class="text-xs text-gray-500">/ A4 oldal</div>
-          </div>
-        </div>
-
-        <!-- Card B: Offset -->
-        <div
-          class="glass p-8 rounded-2xl border border-white/5 hover:border-purple-500/50 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl opacity-0 translate-y-8 animate-on-scroll group"
-          style="transition-delay: 200ms;">
-          <div
-            class="w-14 h-14 bg-purple-900/30 rounded-xl flex items-center justify-center mb-6 text-purple-400 group-hover:scale-110 transition-transform">
-            <i data-lucide="layers" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-1">Ofszet Nyomda</h3>
-          <div class="text-sm text-purple-300 font-medium mb-4 uppercase tracking-wider">Nagy példányszámhoz</div>
-          <p class="text-gray-400 text-sm mb-6 min-h-[60px]">
-            Hagyományos technika, nyomólemezt (klisét) kell készíteni. Van lemez és beállási költség.
-          </p>
-
-          <div class="bg-black/30 p-4 rounded-lg mb-6">
-            <div class="text-xs text-gray-500 uppercase mb-1">Használat</div>
-            <p class="text-gray-300 text-sm">Több tízezer szórólap készítéséhez. <span
-                class="font-bold text-white">250-500 db felett</span> gazdaságos.</p>
-          </div>
-
-          <div class="pt-4 border-t border-white/10">
-            <div class="text-sm text-gray-300">
-              <i data-lucide="check" class="w-4 h-4 inline mr-1 text-green-400"></i> Partnerhálózaton keresztül
-              garantált minőség
-            </div>
-          </div>
-        </div>
-
-        <!-- Card C: Screen -->
-        <div
-          class="glass p-8 rounded-2xl border border-white/5 hover:border-yellow-500/50 hover:bg-white/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl opacity-0 translate-y-8 animate-on-scroll group"
-          style="transition-delay: 300ms;">
-          <div
-            class="w-14 h-14 bg-yellow-900/30 rounded-xl flex items-center justify-center mb-6 text-yellow-400 group-hover:scale-110 transition-transform">
-            <i data-lucide="palette" class="w-8 h-8"></i>
-          </div>
-          <h3 class="text-xl font-bold text-white mb-1">Szitanyomás</h3>
-          <div class="text-sm text-yellow-300 font-medium mb-4 uppercase tracking-wider">Speciális színek</div>
-          <p class="text-gray-400 text-sm mb-6 min-h-[60px]">
-            Több ezer éves technika! Olyan színeket tud, amit a modern gépek nem: <strong class="text-white">Arany,
-              Ezüst, Fehér</strong>. Színei sokkal élénkebbek.
-          </p>
-
-          <div class="bg-black/30 p-4 rounded-lg mb-6">
-            <div class="text-xs text-gray-500 uppercase mb-1">Előny</div>
-            <p class="text-gray-300 text-sm">Pólónyomáshoz és különleges felületekre kiváló.</p>
-          </div>
-
-          <div class="pt-4 border-t border-white/10">
-            <div class="text-lg font-bold text-white mb-1">5000 Ft <span
-                class="text-sm font-normal text-gray-400">(+áfa)</span></div>
-            <div class="text-xs text-gray-500">/ szín (beállási költség)</div>
-          </div>
-        </div>
-
-      </div>
-
     </div>
   </section>
 
-  <section id="nagyformatum" class="py-20 bg-black/20">
+
+
+  <section id="nagyformatum" class="py-20 bg-black/20 relative overflow-hidden">
     <!-- Hero Section with Industrial Background -->
     <div class="absolute inset-0 z-0">
       <div class="absolute inset-0 bg-gradient-to-r from-black via-slate-900 to-black z-10"></div>
@@ -927,10 +618,10 @@
               <div class="pt-2">
                 <div class="flex items-center gap-2 text-sm font-mono text-cyan-400 mb-1">
                   <i data-lucide="ruler" class="w-4 h-4"></i>
-                  <span>Maximális szélesség: 160 cm</span>
+                  <span>Maximális szélesség: 134 cm</span>
                 </div>
                 <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden max-w-sm">
-                  <div class="h-full w-3/4 bg-cyan-500"></div>
+                  <div class="h-full w-2/3 bg-cyan-500"></div>
                 </div>
               </div>
             </div>
@@ -941,14 +632,14 @@
             <div
               class="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             </div>
-            <img src="./input_file.07.png" alt="Nagyformátumú nyomtatás"
+            <img src="perforalt szorolap.jpg" alt="Nagyformátumú nyomtatás álló perforált szórólap"
               class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700">
           </div>
         </div>
       </div>
 
       <!-- Services Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-24 opacity-0 translate-y-8 animate-on-scroll">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24 opacity-0 translate-y-8 animate-on-scroll">
 
         <!-- Service 1 -->
         <div class="bg-white/5 border border-white/10 p-6 rounded-xl hover:bg-white/10 transition-colors group">
@@ -976,13 +667,6 @@
           <i data-lucide="crop" class="w-8 h-8 text-emerald-500 mb-4 group-hover:scale-110 transition-transform"></i>
           <h4 class="text-white font-bold mb-2">Formavágás</h4>
           <p class="text-gray-400 text-sm">Matricák, címkék, feliratok tetszőleges formára vágása.</p>
-        </div>
-
-        <!-- Service 5 -->
-        <div class="bg-white/5 border border-white/10 p-6 rounded-xl hover:bg-white/10 transition-colors group">
-          <i data-lucide="hammer" class="w-8 h-8 text-purple-500 mb-4 group-hover:scale-110 transition-transform"></i>
-          <h4 class="text-white font-bold mb-2">Telepítés</h4>
-          <p class="text-gray-400 text-sm">Nyomatok szakszerű kihelyezése reális áron.</p>
         </div>
 
       </div>
@@ -1015,12 +699,12 @@
               <div class="space-y-2">
                 <label class="text-xs uppercase text-gray-400 font-bold tracking-wider">Szélesség (cm)</label>
                 <div class="relative">
-                  <input type="number" id="lf-height" min="1" max="158"
+                  <input type="number" id="lf-height" min="1" max="134"
                     class="w-full bg-black/40 border border-white/10 rounded-lg p-3 pl-4 text-white focus:border-emerald-400 focus:outline-none transition-colors font-mono"
                     placeholder="pl. 100">
                   <div class="absolute right-3 top-3 text-gray-500 text-sm">cm</div>
                 </div>
-                <p class="text-xs text-red-400 hidden" id="lf-width-warning">Max. nyomtatási szélesség: 158cm!</p>
+                <p class="text-xs text-red-400 hidden" id="lf-width-warning">Max. nyomtatási szélesség: 134cm!</p>
               </div>
 
               <div class="space-y-2">
@@ -1038,21 +722,26 @@
                 </div>
                 <div class="flex justify-between text-sm">
                   <span class="text-gray-400">Egységár:</span>
-                  <span class="text-white font-mono">4000 Ft/nm</span>
+                  <span class="text-white font-mono">5000 Ft/nm</span>
                 </div>
               </div>
 
               <div class="pt-6 border-t border-white/10 mt-6">
-                <span class="text-gray-400 text-sm block mb-1">Bruttó végösszeg:</span>
+                <span class="text-gray-400 text-sm block mb-1">Nettó végösszeg:</span>
                 <div class="text-4xl font-bold text-white font-mono mb-6">
                   <span id="lf-result"
                     class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">0</span>
                   <span class="text-lg text-gray-500">Ft</span>
                 </div>
-                <a href="#contact"
+                <a href="#contact-form"
                   class="btn btn-primary w-full py-3 rounded-lg text-center block font-bold hover:scale-[1.02] transition-transform">
                   Megrendelés leadása
                 </a>
+                <p class="text-xs text-gray-500 text-center mt-3 leading-relaxed">
+                  <i data-lucide="info" class="w-3 h-3 inline mr-1"></i> A megrendeléshez szükséges feltölteni a
+                  kívánt nyomdai fájlt (grafikát), valamint megadni a nevét, e-mail címét és telefonszámát alább az
+                  űrlapon.
+                </p>
               </div>
             </div>
           </form>
@@ -1075,20 +764,22 @@
     </div>
   </section>
 
-  <section id="tervrajz" class="py-20 relative overflow-hidden">
+  <!-- Tervrajz Szekció -->
+  <section id="tervrajz" class="py-20 relative overflow-hidden flex flex-col justify-center min-h-[80vh]">
     <!-- Blueprint Background -->
-    <div class="absolute inset-0 bg-[#0a192f]"
-      style="background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 20px 20px;">
+    <div class="absolute inset-0 bg-[#0a192f] bg-center bg-fixed shadow-inner"
+      style="background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 20px 20px; background-position: center top;">
     </div>
 
-    <div class="container mx-auto px-4 relative z-10">
+    <div class="container mx-auto px-4 relative z-10 my-auto">
 
-      <div class="flex flex-col lg:flex-row items-start gap-16">
+      <!-- Two-column Layout -->
+      <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
 
-        <!-- Left Column: Info & Pricing -->
-        <div class="lg:w-1/2 pt-10 opacity-0 translate-x-[-20px] animate-on-scroll">
+        <!-- Left Column: Info & Image -->
+        <div class="lg:w-1/2 pt-10 opacity-0 translate-y-4 animate-on-scroll flex flex-col h-full">
 
-          <h2 class="text-5xl font-bold mb-6 text-white font-display">
+          <h2 class="text-5xl font-bold mb-6 text-white font-display text-center md:text-left">
             Tervrajz <br>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">nyomtatás</span>
           </h2>
@@ -1104,116 +795,152 @@
             <span class="text-white font-bold">Cégeket és magánszemélyeket egyaránt kiszolgálunk!</span>
           </div>
 
-          <!-- Pricing Block -->
-          <div
-            class="bg-black/40 border border-white/10 p-8 rounded-xl backdrop-blur-sm relative overflow-hidden group hover:border-cyan-500/50 transition-colors mb-0">
-            <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none">
-            </div>
-
-            <h3 class="text-gray-400 text-sm uppercase tracking-wider mb-2">Kiemelt ajánlat</h3>
-            <div class="flex items-baseline gap-2 mb-6">
-              <span class="text-5xl font-bold text-white font-mono">1 000</span>
-              <span class="text-xl text-cyan-400">Ft / nm</span>
-            </div>
-
-            <a href="#contact"
-              class="btn btn-primary w-full py-3 rounded text-center block font-bold hover:scale-[1.02] transition-transform">
-              Árajánlatkéréshez kattintson ide!
-            </a>
-          </div>
-
-          <!-- A-Series Visualizer (Restored) -->
-          <div
-            class="relative w-full aspect-[2/1] bg-blue-900/10 border-2 border-dashed border-white/10 rounded-lg p-4 flex items-end justify-start overflow-hidden mt-8">
-            <div class="absolute top-2 right-2 text-xs font-mono text-gray-500">ISO 216 Szabványméretek</div>
-
-            <!-- A0 Container -->
-            <div
-              class="relative h-full aspect-[1.414/1] border-2 border-white/20 bg-white/5 flex items-start justify-end p-2 transition-colors hover:bg-cyan-500/10 hover:border-cyan-500 group cursor-default ml-auto mr-auto">
-              <span
-                class="text-white/30 font-bold text-2xl absolute bottom-2 right-4 group-hover:text-cyan-400">A0</span>
-
-              <!-- A1 -->
-              <div
-                class="w-[50%] h-full border-r border-b border-white/20 absolute left-0 top-0 transition-colors hover:bg-cyan-500/20 hover:border-cyan-400 z-10 flex items-end justify-end p-2">
-                <span class="text-white/30 font-bold text-xl">A1</span>
-
-                <!-- A2 -->
-                <div
-                  class="w-full h-[50%] border-t border-white/20 absolute left-0 top-0 transition-colors hover:bg-cyan-500/30 hover:border-cyan-400 z-20 flex items-end justify-end p-1">
-                  <span class="text-white/30 font-bold text-lg">A2</span>
-
-                  <!-- A3 -->
-                  <div
-                    class="w-[50%] h-full border-r border-white/20 absolute left-0 top-0 transition-colors hover:bg-cyan-500/40 hover:border-cyan-400 z-30 flex items-end justify-end p-1">
-                    <span class="text-white/30 font-bold text-sm">A3</span>
-
-                    <!-- A4 -->
-                    <div
-                      class="w-full h-[50%] border-b border-white/20 absolute left-0 bottom-0 transition-colors hover:bg-cyan-500/50 hover:border-cyan-400 z-40 flex items-center justify-center">
-                      <span class="text-white/50 font-bold text-[10px]">A4</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Column: Visualizer & Calculator -->
-        <div class="lg:w-1/2 w-full lg:sticky lg:top-24 opacity-0 translate-x-[20px] animate-on-scroll"
-          style="transition-delay: 200ms;">
-
-          <!-- Contextual Image -->
-          <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 mb-8 group">
+          <!-- Contextual Image (moved below text) -->
+          <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 mt-auto group">
             <div
               class="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             </div>
             <img src="./input_file.08.png" alt="Tervrajz nyomtatás"
               class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700">
           </div>
+        </div>
 
-          <!-- Mini Calculator -->
-          <div class="glass p-6 rounded-xl border-t-4 border-t-blue-500">
-            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <i data-lucide="calculator" class="w-5 h-5 text-blue-400"></i> Gyors árkalkulátor
-            </h3>
-            <form id="bp-calculator" class="space-y-4">
-              <div class="grid grid-cols-2 gap-4">
-                <div class="space-y-1">
-                  <label class="text-xs text-gray-400 font-mono">Szélesség (m)</label>
-                  <input type="number" id="bp-width" step="0.01" min="0.1"
-                    class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-blue-400 focus:outline-none"
-                    placeholder="0.84">
-                </div>
-                <div class="space-y-1">
-                  <label class="text-xs text-gray-400 font-mono">Hossz (m)</label>
-                  <input type="number" id="bp-height" step="0.01" min="0.1"
-                    class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-blue-400 focus:outline-none"
-                    placeholder="1.2">
-                </div>
+        <!-- Right Column: Tabs & Calculator -->
+        <div class="lg:w-1/2 w-full lg:sticky lg:top-24 opacity-0 translate-x-[20px] animate-on-scroll"
+          style="transition-delay: 200ms;">
+
+          <div
+            class="space-y-6 bg-black/40 border border-white/10 p-4 sm:p-8 rounded-xl backdrop-blur-sm self-stretch mb-8">
+            <h3 class="text-2xl font-bold text-white mb-6 text-center">Válasszon alapanyagot:</h3>
+
+            <!-- Tab Controls -->
+            <div class="grid grid-cols-2 gap-2 p-1 bg-white/5 rounded-lg mb-8">
+              <button id="bp-tab-paper"
+                class="bp-tab-btn active py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all bg-cyan-500 text-white shadow-lg">
+                Sima Papír
+              </button>
+              <button id="bp-tab-weather"
+                class="bp-tab-btn py-3 px-4 rounded-md font-bold text-sm sm:text-base transition-all text-gray-400 hover:text-white hover:bg-white/10">
+                Időjárásálló
+              </button>
+            </div>
+
+            <!-- Active Tab Contents Container -->
+            <div class="relative min-h-[500px]">
+
+              <!-- TAB 1: Standard Blueprint Calculator -->
+              <div id="bp-content-paper"
+                class="bp-tab-content flex glass p-6 rounded-xl border-t-4 border-t-cyan-500 absolute inset-0 animate-fade-in flex-col z-20">
+                <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                  <i data-lucide="calculator" class="w-5 h-5 text-cyan-400"></i> Árkalkulátor - Sima Papír
+                </h3>
+                <p class="text-gray-400 text-sm mb-6 pb-4 border-b border-white/10"> Fix ár: <strong
+                    class="text-white">1 000 Ft/nm</strong>. Ideális általános felhasználásra és szabvány tervekhez.
+                </p>
+                <form id="bp-calculator" class="space-y-4 flex flex-col flex-1">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                      <label class="text-xs text-gray-400 font-mono">Szélesség (m)</label>
+                      <input type="number" id="bp-width" step="0.01" min="0.1"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-cyan-400 focus:outline-none"
+                        placeholder="0.84">
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-xs text-gray-400 font-mono">Hossz (m)</label>
+                      <input type="number" id="bp-height" step="0.01" min="0.1"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-cyan-400 focus:outline-none"
+                        placeholder="1.2">
+                    </div>
+                  </div>
+                  <div class="flex items-end justify-between gap-4">
+                    <div class="space-y-1 w-24">
+                      <label class="text-xs text-gray-400 font-mono">Példány</label>
+                      <input type="number" id="bp-qty" min="1" value="1"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-cyan-400 focus:outline-none">
+                    </div>
+                    <div class="text-right pb-1">
+                      <span class="text-xs text-gray-500 block">Nettó Végösszeg</span>
+                      <span id="bp-result"
+                        class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 font-mono">0</span>
+                      <span class="text-gray-400">Ft</span>
+                    </div>
+                  </div>
+                  <!-- Warning & Checkout -->
+                  <div class="pt-4 border-t border-white/10 mt-auto">
+                    <a href="#contact-form"
+                      class="btn btn-primary w-full py-3 rounded-lg text-center block font-bold hover:scale-[1.02] transition-transform">
+                      Megrendelés leadása (Sima Papír)
+                    </a>
+                    <p class="text-xs text-gray-500 text-center mt-3 leading-relaxed">
+                      <i data-lucide="info" class="w-3 h-3 inline mr-1"></i> (Nettó végösszeg alatti megrendelés
+                      esetén.) A rendeléshez küldje el adatait az űrlapon.
+                    </p>
+                  </div>
+                </form>
               </div>
-              <div class="flex items-end justify-between gap-4">
-                <div class="space-y-1 w-24">
-                  <label class="text-xs text-gray-400 font-mono">Példány</label>
-                  <input type="number" id="bp-qty" min="1" value="1"
-                    class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-blue-400 focus:outline-none">
-                </div>
-                <div class="text-right pb-1">
-                  <span class="text-xs text-gray-500 block">Becsült költség</span>
-                  <span id="bp-result" class="text-2xl font-bold text-white font-mono">0</span> <span
-                    class="text-gray-400">Ft</span>
-                </div>
+
+              <!-- TAB 2: Weatherproof Calculator -->
+              <div id="bp-content-weather"
+                class="bp-tab-content hidden glass p-6 rounded-xl border-t-4 border-t-purple-500 absolute inset-0 animate-fade-in flex-col z-10">
+                <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                  <i data-lucide="cloud-rain" class="w-5 h-5 text-purple-400"></i> Árkalkulátor - Időjárásálló
+                </h3>
+                <p class="text-gray-400 text-sm mb-6 pb-4 border-b border-white/10"> Sávos ár: <strong
+                    class="text-white">max 5 000 Ft/nm</strong>. Ideális építkezésekre (Tyvek/PVC). </p>
+                <form id="bp-weather-calculator" class="space-y-4">
+                  <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                      <label class="text-xs text-gray-400 font-mono">Szélesség (m)</label>
+                      <input type="number" id="bp-w-width" step="0.01" min="0.1"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-purple-400 focus:outline-none"
+                        placeholder="0.84">
+                    </div>
+                    <div class="space-y-1">
+                      <label class="text-xs text-gray-400 font-mono">Hossz (m)</label>
+                      <input type="number" id="bp-w-height" step="0.01" min="0.1"
+                        class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-purple-400 focus:outline-none"
+                        placeholder="1.2">
+                    </div>
+                  </div>
+                  <div class="space-y-1">
+                    <label class="text-xs text-gray-400 font-mono">Példány</label>
+                    <input type="number" id="bp-w-qty" min="1" value="1"
+                      class="w-full bg-black/40 border border-white/10 rounded p-2 text-white font-mono focus:border-purple-400 focus:outline-none">
+                  </div>
+
+                  <div class="flex justify-between items-center text-sm pt-4 border-t border-white/10">
+                    <span class="text-gray-400">Egységár:</span>
+                    <span class="text-white font-mono">5000 Ft/nm</span>
+                  </div>
+
+                  <div class="flex items-end justify-between gap-4 pt-2">
+                    <div class="text-right pb-1 ml-auto">
+                      <span class="text-xs text-gray-500 block">Nettó Végösszeg</span>
+                      <span id="bp-w-result"
+                        class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 font-mono">0</span>
+                      <span class="text-gray-400">Ft</span>
+                    </div>
+                  </div>
+                  <!-- Warning & Checkout -->
+                  <div class="pt-4 border-t border-white/10 mt-auto">
+                    <a href="#contact-form"
+                      class="btn btn-primary w-full py-3 rounded-lg text-center block font-bold hover:scale-[1.02] hover:bg-purple-600 transition-transform bg-purple-500">
+                      Megrendelés leadása (Időjárásálló)
+                    </a>
+                    <p class="text-xs text-gray-500 text-center mt-3 leading-relaxed">
+                      <i data-lucide="info" class="w-3 h-3 inline mr-1"></i> (Nettó végösszeg alatti megrendelés
+                      esetén.)
+                      A rendeléshez küldje el adatait az űrlapon.
+                    </p>
+                  </div>
+                </form>
               </div>
-            </form>
+
+            </div>
+
           </div>
 
         </div>
-
-      </div>
-
-
-    </div>
   </section>
 
   <!-- Contact Form Section (New) -->
@@ -1221,7 +948,8 @@
 
     <!-- Decorative background elements -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-      <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-900/10 rounded-full blur-[120px]"></div>
+      <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-900/10 rounded-full blur-[120px]">
+      </div>
       <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]">
       </div>
     </div>
@@ -1270,6 +998,19 @@
               placeholder="Miben segíthetünk Önnek?" required></textarea>
           </div>
 
+          <div class="space-y-2 text-left">
+            <label class="text-sm font-bold text-gray-500 uppercase tracking-wider ml-1">Fájl csatolása</label>
+            <div
+              class="relative w-full bg-white/5 border border-white/10 border-dashed rounded-xl p-6 text-center hover:bg-white/10 hover:border-cyan-400 transition-all duration-300">
+              <input type="file" id="file-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+              <div class="flex flex-col items-center gap-2 pointer-events-none text-gray-400">
+                <i data-lucide="upload-cloud" class="w-8 h-8 text-cyan-400"></i>
+                <span>Kattintson vagy húzza ide a fájlt a feltöltéshez</span>
+                <span class="text-xs text-gray-500">Max. fájlméret: 20MB (JPG, TIF, PDF, CDR)</span>
+              </div>
+            </div>
+          </div>
+
           <div class="pt-8 text-center">
             <button type="submit"
               class="btn btn-primary px-12 py-4 rounded-xl font-bold text-lg hover:scale-[1.02] hover:shadow-cyan-500/20 hover:shadow-lg active:scale-[0.98] transition-all duration-300 inline-flex items-center gap-3 group">
@@ -1287,7 +1028,8 @@
 
     <!-- Decorative Background Elements -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-      <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[100px]"></div>
+      <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-900/10 rounded-full blur-[100px]">
+      </div>
       <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[100px]">
       </div>
     </div>
@@ -1351,14 +1093,17 @@
               </div>
             </li>
 
-            <!-- Skype -->
+            <!-- Facebook -->
             <li class="flex items-start gap-4 group">
-              <div class="mt-1 p-2 rounded-lg bg-white/5 text-cyan-400 group-hover:bg-cyan-500/20 transition-colors">
-                <i data-lucide="message-square" class="w-5 h-5"></i>
+              <div class="mt-1 p-2 rounded-lg bg-white/5 text-blue-500 group-hover:bg-blue-500/20 transition-colors">
+                <i data-lucide="facebook" class="w-5 h-5"></i>
               </div>
               <div>
-                <span class="block text-xs text-gray-500 uppercase tracking-widest mb-1">Skype</span>
-                <span class="text-gray-300">SkyPe: sdpkft</span>
+                <span class="block text-xs text-gray-500 uppercase tracking-widest mb-1">Facebook</span>
+                <a href="https://www.facebook.com/sdpkft?locale=hu_HU" target="_blank"
+                  class="text-gray-300 hover:text-blue-400 transition-colors">
+                  sdpkft
+                </a>
               </div>
             </li>
           </ul>
