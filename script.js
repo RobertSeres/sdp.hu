@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const calcQty = document.getElementById('calc-qty');
     const calcResult = document.getElementById('calc-result');
     const calcArea = document.getElementById('calc-area');
-    const calcUnitPrice = document.querySelector('#sticker-calculator .font-mono:nth-of-type(1)'); // We must target unit price properly, let's just keep calc-result accurate
+    const calcUnit = document.getElementById('calc-unit');
 
     function calculatePrice() {
         if (!calcWidth || !calcHeight || !calcQty || !calcResult) return;
@@ -245,11 +245,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (calcArea) {
                 calcArea.textContent = totalSqm.toFixed(2) + ' nm';
             }
-
-            // Try to update the unit price display
-            const unitPriceDisplay = document.querySelectorAll('#sticker-calculator .font-mono')[1];
-            if (unitPriceDisplay) {
-                unitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft';
+            if (calcUnit) {
+                calcUnit.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
             }
 
             calcResult.textContent = total.toLocaleString('hu-HU');
@@ -257,9 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (calcArea) {
                 calcArea.textContent = '0.00 nm';
             }
-            const unitPriceDisplay = document.querySelectorAll('#sticker-calculator .font-mono')[1];
-            if (unitPriceDisplay) {
-                unitPriceDisplay.textContent = '5000 Ft';
+            if (calcUnit) {
+                calcUnit.textContent = '5000 Ft/nm';
             }
             calcResult.textContent = '0';
         }
@@ -270,43 +266,25 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('input', calculatePrice);
         });
     }
-    // 7. Large Format Calculator
-    const lfWidth = document.getElementById('lf-width');
-    const lfHeight = document.getElementById('lf-height');
-    const lfQty = document.getElementById('lf-qty');
-    const lfResult = document.getElementById('lf-result');
-    const lfArea = document.getElementById('lf-area');
-    const lfWarning = document.getElementById('lf-width-warning');
 
-    function calculateLFPrice() {
-        if (!lfWidth || !lfHeight || !lfQty || !lfResult) return;
+    // 6b. Molino Price Calculator (same pricing as vinyl, base 5000 Ft/nm)
+    const mlWidth = document.getElementById('ml-width');
+    const mlHeight = document.getElementById('ml-height');
+    const mlQty = document.getElementById('ml-qty');
+    const mlResult = document.getElementById('ml-result');
+    const mlArea = document.getElementById('ml-area');
+    const mlUnit = document.getElementById('ml-unit');
+    const mlWarning = document.getElementById('ml-width-warning');
 
-        const width = parseFloat(lfWidth.value) || 0;
-        const height = parseFloat(lfHeight.value) || 0;
-        const qty = parseInt(lfQty.value) || 1;
+    function calculateMolinoPrice() {
+        if (!mlWidth || !mlHeight || !mlQty || !mlResult) return;
 
-        // Warning Check
-        if (lfWarning) {
-            if (width > 158 || height > 158) {
-                // Check if BOTH are larger, or just one. The machine width is limited.
-                // Usually means the shortest side must be <= 158. 
-                // But the prompt says "Maximális szélesség: 160 cm". 
-                // Let's assume strict check on the 'Width' field for now as per prompt implication, 
-                // or intelligent check on min(width, height).
-                // Simple approach: Check the input labeled "Szélesség" (which is lf-height in my HTML?! Wait.)
+        const width = parseFloat(mlWidth.value) || 0;
+        const height = parseFloat(mlHeight.value) || 0;
+        const qty = parseInt(mlQty.value) || 1;
 
-                // In HTML I wrote:
-                // Hosszúság -> lf-width
-                // Szélesség -> lf-height (max 158)
-
-                if (parseFloat(lfHeight.value) > 158) {
-                    lfWarning.classList.remove('hidden');
-                } else {
-                    lfWarning.classList.add('hidden');
-                }
-            } else {
-                lfWarning.classList.add('hidden');
-            }
+        if (mlWarning) {
+            mlWarning.classList.toggle('hidden', height <= 130);
         }
 
         if (width > 0 && height > 0 && qty > 0) {
@@ -317,22 +295,71 @@ document.addEventListener('DOMContentLoaded', () => {
             const unitPrice = basePrice / multiplier;
             let total = Math.round(totalSqm * unitPrice);
 
+            if (mlArea) {
+                mlArea.textContent = totalSqm.toFixed(2) + ' nm';
+            }
+            if (mlUnit) {
+                mlUnit.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
+            }
+
+            mlResult.textContent = total.toLocaleString('hu-HU');
+        } else {
+            if (mlArea) {
+                mlArea.textContent = '0.00 nm';
+            }
+            if (mlUnit) {
+                mlUnit.textContent = '5000 Ft/nm';
+            }
+            mlResult.textContent = '0';
+        }
+    }
+
+    if (mlWidth && mlHeight && mlQty) {
+        [mlWidth, mlHeight, mlQty].forEach(input => {
+            input.addEventListener('input', calculateMolinoPrice);
+        });
+    }
+    // 7. Poster (Plakat) Calculator - same pricing curve, base 4000 Ft/nm
+    const lfWidth = document.getElementById('lf-width');
+    const lfHeight = document.getElementById('lf-height');
+    const lfQty = document.getElementById('lf-qty');
+    const lfResult = document.getElementById('lf-result');
+    const lfArea = document.getElementById('lf-area');
+    const lfUnit = document.getElementById('lf-unit');
+    const lfWarning = document.getElementById('lf-width-warning');
+
+    function calculateLFPrice() {
+        if (!lfWidth || !lfHeight || !lfQty || !lfResult) return;
+
+        const width = parseFloat(lfWidth.value) || 0;
+        const height = parseFloat(lfHeight.value) || 0;
+        const qty = parseInt(lfQty.value) || 1;
+
+        // The "Szelesseg" input (lf-height) is limited by the printer width
+        if (lfWarning) {
+            lfWarning.classList.toggle('hidden', height <= 134);
+        }
+
+        if (width > 0 && height > 0 && qty > 0) {
+            const areaM2 = (width * height) / 10000;
+            const totalSqm = areaM2 * qty;
+            const basePrice = 4000;
+            const multiplier = getMultiplier(totalSqm);
+            const unitPrice = basePrice / multiplier;
+            let total = Math.round(totalSqm * unitPrice);
+
             if (lfArea) {
                 lfArea.textContent = totalSqm.toFixed(2) + ' nm';
             }
-
-            // Update unit price text element natively
-            const lfUnitPriceDisplay = document.querySelectorAll('#lf-calculator .font-mono')[1];
-            if (lfUnitPriceDisplay) {
-                lfUnitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
+            if (lfUnit) {
+                lfUnit.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
             }
 
             lfResult.textContent = total.toLocaleString('hu-HU');
         } else {
             if (lfArea) lfArea.textContent = '0.00 nm';
-            const lfUnitPriceDisplay = document.querySelectorAll('#lf-calculator .font-mono')[1];
-            if (lfUnitPriceDisplay) {
-                lfUnitPriceDisplay.textContent = '5000 Ft/nm';
+            if (lfUnit) {
+                lfUnit.textContent = '4000 Ft/nm';
             }
             lfResult.textContent = '0';
         }
@@ -374,11 +401,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 9. Weatherproof Blueprint Calculator
+    // 9. Weatherproof Blueprint Calculator - base 4000 Ft/nm
     const bpwWidth = document.getElementById('bp-w-width');
     const bpwHeight = document.getElementById('bp-w-height');
     const bpwQty = document.getElementById('bp-w-qty');
     const bpwResult = document.getElementById('bp-w-result');
+    const bpwUnit = document.getElementById('bp-w-unit');
 
     function calculateBCWeatherPrice() {
         if (!bpwWidth || !bpwHeight || !bpwQty || !bpwResult) return;
@@ -390,22 +418,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (width > 0 && height > 0 && qty > 0) {
             // Formula in meters: Width * Height = sqm
             const totalSqm = width * height * qty;
-            const basePrice = 5000;
+            const basePrice = 4000;
             const multiplier = getMultiplier(totalSqm);
             const unitPrice = basePrice / multiplier;
             let total = Math.round(totalSqm * unitPrice);
 
-            // Update unit price text element natively
-            const bpwUnitPriceDisplay = document.querySelectorAll('#bp-weather-calculator .font-mono')[3];
-            if (bpwUnitPriceDisplay) {
-                bpwUnitPriceDisplay.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
+            if (bpwUnit) {
+                bpwUnit.textContent = Math.round(unitPrice).toLocaleString('hu-HU') + ' Ft/nm';
             }
 
             bpwResult.textContent = total.toLocaleString('hu-HU');
         } else {
-            const bpwUnitPriceDisplay = document.querySelectorAll('#bp-weather-calculator .font-mono')[3];
-            if (bpwUnitPriceDisplay) {
-                bpwUnitPriceDisplay.textContent = '5000 Ft/nm';
+            if (bpwUnit) {
+                bpwUnit.textContent = '4000 Ft/nm';
             }
             bpwResult.textContent = '0';
         }
