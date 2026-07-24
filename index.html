@@ -69,6 +69,10 @@
       --body: 'Inter', system-ui, sans-serif;
     }
 
+    /* Biztonsági alap: az oldal akkor is sötét, ha a style.css nem tölt be. */
+    html { background: var(--ink); }
+    body { background: var(--ink); color: var(--paper); }
+
     /* ---------- szekció váz ---------- */
     .ed {
       position: relative;
