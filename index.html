@@ -56,8 +56,8 @@
       --ink: #05070E;
       --ink-2: #080D18;
       --paper: #E9EEF6;
-      --dim: rgba(233, 238, 246, .54);
-      --dimmer: rgba(233, 238, 246, .34);
+      --dim: rgba(233, 238, 246, .78);
+      --dimmer: rgba(233, 238, 246, .72);
       --cyan: #22D3EE;
       --magenta: #E0489F;
       --rule: rgba(233, 238, 246, .11);
@@ -427,7 +427,7 @@
 
     .f label {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11.5px;
       font-weight: 500;
       letter-spacing: .18em;
       text-transform: uppercase;
@@ -459,7 +459,7 @@
 
     .f input:focus,
     .f textarea:focus { outline: none; border-bottom-color: var(--cyan); }
-    .f input::placeholder, .f textarea::placeholder { color: rgba(233, 238, 246, .2); }
+    .f input::placeholder, .f textarea::placeholder { color: rgba(233, 238, 246, .58); }
 
     .f input[type=number]::-webkit-outer-spin-button,
     .f input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -563,7 +563,7 @@
 
     .index__n {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11.5px;
       letter-spacing: .2em;
       color: var(--dimmer);
       display: block;
@@ -584,7 +584,7 @@
 
     .index__m {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11.5px;
       letter-spacing: .16em;
       text-transform: uppercase;
       color: var(--dimmer);
@@ -710,15 +710,14 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      filter: grayscale(1) contrast(.9);
-      transition: filter .3s;
+      transition: transform .3s;
     }
 
-    .ref:hover .ref__plate img { filter: none; }
+    .ref:hover .ref__plate img { transform: scale(1.05); }
 
     .ref__n {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11.5px;
       letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--dimmer);
