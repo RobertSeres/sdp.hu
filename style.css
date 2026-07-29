@@ -1,507 +1,3 @@
-/* ==========================================================================
-   DESIGN SYSTEM — editorial / print redesign
-   Tokens + base styles + reusable utilities for redesigned sections.
-   Untouched sections keep using the Tailwind/.glass utilities further below.
-   ========================================================================== */
-
-:root {
-    /* Color tokens */
-    --bg: #080B14;
-    --surface: rgba(255, 255, 255, 0.02);
-    --hairline: rgba(255, 255, 255, 0.07);
-    --cyan: #22D3EE;
-    --magenta: #E048A8;
-    /* accent — hover/active states ONLY, never decorative */
-    --text: #E8EDF5;
-    --text-dim: rgba(232, 237, 245, 0.55);
-
-    /* Type tokens */
-    --font-display: 'Archivo', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --font-mono: 'IBM Plex Mono', monospace;
-
-    /* Layout tokens */
-    --container-max: 1440px;
-    --container-margin: 5vw;
-    --section-gap: clamp(120px, 14vw, 200px);
-}
-
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* -- Global grain overlay -------------------------------------------------
-   Fixed, full-viewport, non-interactive film grain. Sits above everything
-   (z-index above the fixed nav) but is inert and nearly imperceptible.
----------------------------------------------------------------------------*/
-.grain-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    opacity: 0.035;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* -- Typography scale ------------------------------------------------------
-   .text-display — section titles (Archivo 800, editorial scale)
-   .text-body    — running copy (Inter, capped measure)
-   .text-meta    — mono label / eyebrow
----------------------------------------------------------------------------*/
-.text-display {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(56px, 8vw, 150px);
-    line-height: 0.9;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin: 0;
-}
-
-.text-body {
-    font-family: var(--font-body);
-    font-size: 16px;
-    line-height: 1.65;
-    max-width: 58ch;
-    color: var(--text-dim);
-    margin: 0;
-}
-
-.text-meta {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-dim);
-}
-
-@media (max-width: 768px) {
-    .text-display {
-        font-size: clamp(36px, 11vw, 44px);
-    }
-}
-
-/* -- Layout ------------------------------------------------------------- */
-.container-ed {
-    max-width: var(--container-max);
-    margin-inline: auto;
-    padding-inline: var(--container-margin);
-    position: relative;
-}
-
-.section-ed {
-    padding-block: var(--section-gap);
-    position: relative;
-    overflow: hidden;
-}
-
-/* -- Hairline -------------------------------------------------------------
-   Thin 1px separators, replacing bordered "card" boxes everywhere.
----------------------------------------------------------------------------*/
-.hairline {
-    border-bottom: 1px solid var(--hairline);
-}
-
-.hairline-top {
-    border-top: 1px solid var(--hairline);
-}
-
-/* -- Section meta strip (mono eyebrow above each section) ---------------- */
-.section-meta {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--hairline);
-    padding-bottom: 1.25rem;
-    margin-bottom: clamp(48px, 6vw, 96px);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5em 0;
-}
-
-.section-meta span:not(:first-child)::before {
-    content: '—';
-    margin: 0 0.6em;
-    color: var(--hairline);
-}
-
-/* -- Crop marks -------------------------------------------------------------
-   Print-style corner registration marks. Host needs position: relative
-   (provided by .section-ed / .container-ed).
----------------------------------------------------------------------------*/
-.crop-marks::before,
-.crop-marks::after {
-    content: '';
-    position: absolute;
-    top: clamp(24px, 4vw, 48px);
-    width: 16px;
-    height: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    pointer-events: none;
-    z-index: 2;
-}
-
-.crop-marks::before {
-    left: var(--container-margin);
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.crop-marks::after {
-    right: var(--container-margin);
-    border-right: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-/* -- Ambient glow -----------------------------------------------------------
-   One large, faint radial glow per section. Position via --glow-x/--glow-y
-   on the host element; color defaults to cyan (the only decorative accent).
----------------------------------------------------------------------------*/
-.section-glow {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.section-glow::before {
-    content: '';
-    position: absolute;
-    top: var(--glow-y, 0%);
-    left: var(--glow-x, 50%);
-    width: 60vw;
-    height: 60vw;
-    max-width: 900px;
-    max-height: 900px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, var(--cyan) 0%, transparent 70%);
-    opacity: 0.10;
-}
-
-/* -- Halftone dot texture --------------------------------------------------- */
-.halftone {
-    background-image: repeating-radial-gradient(circle at 0 0, transparent 0, transparent 2px, rgba(255, 255, 255, 0.06) 3px);
-    background-size: 7px 7px;
-}
-
-/* -- Duotone image grade -----------------------------------------------------
-   Wrap an <img> in .duotone and set an aspect-ratio utility on it.
----------------------------------------------------------------------------*/
-.duotone {
-    position: relative;
-    overflow: hidden;
-    display: block;
-}
-
-.duotone img {
-    position: relative;
-    z-index: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.duotone::before,
-.duotone::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.duotone::before {
-    background: #0B1428;
-    mix-blend-mode: multiply;
-    z-index: 1;
-}
-
-.duotone::after {
-    background: var(--cyan);
-    opacity: 0.18;
-    mix-blend-mode: screen;
-    z-index: 2;
-}
-
-.ar-4-3 {
-    aspect-ratio: 4 / 3;
-}
-
-.ar-4-5 {
-    aspect-ratio: 4 / 5;
-}
-
-.ar-16-9 {
-    aspect-ratio: 16 / 9;
-}
-
-/* -- Hairline definition list (replaces "feature card" boxes) --------------- */
-.spec-list {
-    margin: 0;
-    border-top: 1px solid var(--hairline);
-}
-
-.spec-row {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--hairline);
-}
-
-.spec-row dt {
-    display: flex;
-    align-items: center;
-    gap: 0.6em;
-    font-weight: 600;
-    color: var(--text);
-    margin: 0 0 0.35em;
-}
-
-.spec-row dt i,
-.spec-row dt svg {
-    width: 16px;
-    height: 16px;
-    color: var(--cyan);
-    flex-shrink: 0;
-}
-
-.spec-row dd {
-    margin: 0;
-    padding-left: calc(16px + 0.6em);
-    color: var(--text-dim);
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-/* -- Numbered index list (replaces "checklist grid" boxes) ------------------ */
-.index-list {
-    border-top: 1px solid var(--hairline);
-}
-
-.index-list > a,
-.index-list > div {
-    display: flex;
-    align-items: baseline;
-    gap: 1.5rem;
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--hairline);
-    text-decoration: none;
-    color: var(--text-dim);
-    position: relative;
-    transition: color 0.2s ease;
-}
-
-.index-list .index-num {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    flex-shrink: 0;
-    transition: color 0.2s ease;
-}
-
-.index-list > a:hover {
-    color: var(--text);
-}
-
-.index-list > a:hover .index-num {
-    color: var(--magenta);
-}
-
-.index-list > a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 100%;
-    bottom: -1px;
-    height: 1px;
-    background: var(--magenta);
-    transition: right 0.25s ease;
-}
-
-.index-list > a:hover::after {
-    right: 0;
-}
-
-/* -- Flat calculator panel — the ONE card allowed on the page --------------- */
-.calc-panel {
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    padding: clamp(24px, 3vw, 48px);
-}
-
-.calc-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-}
-
-.calc-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6em;
-}
-
-.calc-field label {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-dim);
-}
-
-.calc-field input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--hairline);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 16px;
-    padding: 0.6em 0;
-    border-radius: 0;
-    transition: border-color 0.2s ease;
-}
-
-.calc-field input:focus {
-    outline: none;
-    border-bottom-color: var(--cyan);
-}
-
-.calc-warning {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--magenta);
-    margin-top: 0.75em;
-}
-
-.calc-totals {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--hairline);
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.calc-totals-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    color: var(--text-dim);
-}
-
-.calc-totals-row .mono-value {
-    font-family: var(--font-mono);
-    color: var(--text);
-    font-size: 13px;
-}
-
-.calc-final {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--hairline);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.calc-result-value {
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(36px, 4vw, 48px);
-    color: var(--cyan);
-    letter-spacing: -0.02em;
-}
-
-/* -- Buttons — solid cyan, magenta ONLY on hover/active --------------------- */
-.btn-ed {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5em;
-    background: var(--cyan);
-    color: var(--bg);
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 15px;
-    padding: 0.9em 1.4em;
-    text-decoration: none;
-    border-radius: 0;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-
-.btn-ed:hover {
-    background: var(--magenta);
-    color: var(--text);
-}
-
-.btn-ed--block {
-    width: 100%;
-    margin-top: 2rem;
-}
-
-/* -- Asymmetric split block --------------------------------------------------
-   Text: cols 1–5. Media: cols 6–12, bleeding to the viewport's right edge.
----------------------------------------------------------------------------*/
-.split-block {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 0 2vw;
-    align-items: center;
-}
-
-.split-block .split-text {
-    grid-column: 1 / span 5;
-}
-
-.split-block .split-text> * + * {
-    margin-top: 2rem;
-}
-
-.split-block .split-text .spec-list,
-.split-block .split-text .calc-panel {
-    margin-top: 3rem;
-}
-
-.split-block .split-media {
-    grid-column: 6 / span 7;
-    margin-right: calc(-1 * var(--container-margin));
-    width: calc(100% + var(--container-margin));
-}
-
-@media (max-width: 900px) {
-    .split-block {
-        display: block;
-    }
-
-    .split-block .split-media {
-        margin-top: 3rem;
-        margin-right: calc(-1 * var(--container-margin));
-        width: calc(100% + var(--container-margin));
-    }
-}
-
-/* ==========================================================================
-   Legacy utilities (Tailwind-era) — kept for not-yet-redesigned sections.
-   ========================================================================== */
-
 /* Anchor jumps land below the fixed navbar */
 html {
     scroll-padding-top: 96px;
@@ -541,9 +37,13 @@ html {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
+.glass {
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
 .glass:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Typography Overrides */
@@ -552,24 +52,56 @@ h2,
 h3,
 h4,
 .font-display {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.02em;
 }
 
 body {
     font-family: 'Inter', sans-serif;
+    /* !important: the Tailwind Play CDN injects its preflight after this file */
+    line-height: 1.7 !important;
+}
+
+/* Controlled reading measure for long-form paragraphs */
+p {
+    max-width: 65ch;
+}
+
+/* Centered leads keep their centering with the measure cap */
+.text-center p,
+p.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* One consistent, tighter content column across the page */
+.container {
+    max-width: 1152px !important;
 }
 
 /* Button Gradients */
 .btn-primary {
     background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
     color: #0f172a;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.2);
 }
 
 .btn-primary:hover {
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
-    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-purple {
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+    color: #ffffff;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.2);
+}
+
+.btn-purple:hover {
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);
+    transform: translateY(-1px);
 }
 
 .btn-outline {
@@ -582,6 +114,21 @@ body {
 .btn-outline:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Tab cross-fade */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
 }
 
 /* Scroll Animations */
