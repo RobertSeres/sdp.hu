@@ -156,11 +156,12 @@
       line-height: .86;
       letter-spacing: -.045em;
       color: var(--paper);
-      overflow-wrap: break-word;
+      overflow-wrap: normal;
+      word-break: keep-all;
       margin: 0 0 .3em;
     }
 
-    .d1--col { font-size: clamp(38px, 5.4vw, 94px); }
+    .d1--col { font-size: clamp(28px, 4.3vw, 62px); }
 
     .masthead { margin-bottom: clamp(34px, 4.6vw, 62px); }
 
@@ -1262,13 +1263,14 @@
               <div class="grid2">
                 <div class="f">
                   <label for="calc-width">Szélesség (cm)</label>
-                  <input type="number" id="calc-width" min="1" placeholder="pl. 10">
+                  <input type="number" id="calc-width" min="1" max="130" placeholder="pl. 10">
                 </div>
                 <div class="f">
                   <label for="calc-height">Magasság (cm)</label>
                   <input type="number" id="calc-height" min="1" placeholder="pl. 5">
                 </div>
               </div>
+              <p class="warn hidden" id="calc-width-warning">Max. szélesség: 130 cm</p>
 
               <div class="f" style="margin-top: 22px;">
                 <label for="calc-qty">Darabszám</label>

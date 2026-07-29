@@ -234,6 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const height = parseFloat(calcHeight.value) || 0;
         const qty = parseInt(calcQty.value) || 1;
 
+        const calcWarn = document.getElementById('calc-width-warning');
+        if (calcWarn) calcWarn.classList.toggle('hidden', width <= 130);
+
         if (width > 0 && height > 0 && qty > 0) {
             const areaM2 = (width * height) / 10000;
             const totalSqm = areaM2 * qty;
@@ -528,9 +531,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 12. Kosár / megrendelés rendszer
     const CALC_CONFIG = {
-        'sticker-calculator': { title: 'Matrica rendelés', dimsLabel: 'Szélesség × Magasság', unit: 'cm', width: 'calc-width', height: 'calc-height', qty: 'calc-qty', area: 'calc-area', price: 'calc-result', qtyLabel: 'Kívánt darabszám', showArea: true },
-        'molino-calculator': { title: 'Molinó rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'ml-width', height: 'ml-height', qty: 'ml-qty', area: 'ml-area', price: 'ml-result', qtyLabel: 'Kívánt darabszám', showArea: true },
-        'lf-calculator': { title: 'Plakát rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'lf-width', height: 'lf-height', qty: 'lf-qty', area: 'lf-area', price: 'lf-result', qtyLabel: 'Kívánt darabszám', showArea: true },
+        'sticker-calculator': { title: 'Matrica rendelés', dimsLabel: 'Szélesség × Magasság', unit: 'cm', width: 'calc-width', height: 'calc-height', qty: 'calc-qty', area: 'calc-area', price: 'calc-result', qtyLabel: 'Kívánt darabszám', showArea: true, maxDim: 130, maxField: 'width', warn: 'calc-width-warning' },
+        'molino-calculator': { title: 'Molinó rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'ml-width', height: 'ml-height', qty: 'ml-qty', area: 'ml-area', price: 'ml-result', qtyLabel: 'Kívánt darabszám', showArea: true, maxDim: 130, maxField: 'height', warn: 'ml-width-warning' },
+        'lf-calculator': { title: 'Plakát rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'lf-width', height: 'lf-height', qty: 'lf-qty', area: 'lf-area', price: 'lf-result', qtyLabel: 'Kívánt darabszám', showArea: true, maxDim: 134, maxField: 'height', warn: 'lf-width-warning' },
         'bp-calculator': { title: 'Tervrajz (papír) rendelés', dimsLabel: 'Szélesség × Hossz', unit: 'm', width: 'bp-width', height: 'bp-height', qty: 'bp-qty', area: null, price: 'bp-result', qtyLabel: 'Példányszám', showArea: false },
         'bp-weather-calculator': { title: 'Tervrajz (időjárásálló) rendelés', dimsLabel: 'Szélesség × Hossz', unit: 'm', width: 'bp-w-width', height: 'bp-w-height', qty: 'bp-w-qty', area: null, price: 'bp-w-result', qtyLabel: 'Példányszám', showArea: false }
     };
@@ -660,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(function () { dot.remove(); }, 700);
     }
 
-    function flashInvalid(btn) {
+    function flashInvalid(btn, msg) {
         if (!btn || !btn.parentElement) return;
         let hint = btn.parentElement.querySelector('.order-hint');
         if (!hint) {
@@ -668,16 +671,24 @@ document.addEventListener('DOMContentLoaded', () => {
             hint.className = 'order-hint warn';
             btn.parentElement.appendChild(hint);
         }
-        hint.textContent = 'Adja meg a méretet és a darabszámot a megrendeléshez.';
+        hint.textContent = msg || 'Adja meg a méretet és a darabszámot a megrendeléshez.';
         hint.classList.remove('hidden');
         clearTimeout(hint._t);
-        hint._t = setTimeout(function () { hint.classList.add('hidden'); }, 4000);
+        hint._t = setTimeout(function () { hint.classList.add('hidden'); }, 5500);
     }
 
     function addToCart(formId, sourceBtn) {
         const r = readCalc(formId);
         if (!r) return;
         if (!(r.w > 0 && r.h > 0 && r.q > 0 && r.price > 0)) { flashInvalid(sourceBtn); return; }
+        if (r.cfg.maxDim) {
+            const dimVal = (r.cfg.maxField === 'height') ? r.h : r.w;
+            if (dimVal > r.cfg.maxDim) {
+                if (r.cfg.warn) { const wn = document.getElementById(r.cfg.warn); if (wn) wn.classList.remove('hidden'); }
+                flashInvalid(sourceBtn, 'A maximális nyomtatási szélesség ' + r.cfg.maxDim + ' cm. Ezt a méretet nem lehet kosárba tenni — egyedi méretről érdeklődjön nálunk.');
+                return;
+            }
+        }
         const item = {
             id: ++cartSeq,
             title: r.cfg.title,
