@@ -476,6 +476,267 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 11. Kapcsolati űrlap – üzenetküldés e-mailben (Web3Forms)
+    const contactForm = document.getElementById('contact-mail-form');
+    const contactStatus = document.getElementById('cf-status');
+    function setContactStatus(msg, type) {
+        if (!contactStatus) return;
+        contactStatus.textContent = msg;
+        contactStatus.classList.remove('hidden');
+        contactStatus.style.color = (type === 'success') ? 'var(--cyan)' : 'var(--magenta)';
+    }
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalBtnHTML = submitBtn ? submitBtn.innerHTML : '';
+
+            const formData = new FormData(contactForm);
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Küldés folyamatban…';
+            }
+            setContactStatus('Küldés folyamatban…', 'success');
+
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    setContactStatus('Köszönjük üzenetét! Hamarosan felvesszük Önnel a kapcsolatot.', 'success');
+                    contactForm.reset();
+                } else {
+                    setContactStatus((data && data.message) ? data.message : 'Hiba történt a küldés során. Kérjük, próbálja újra, vagy írjon közvetlenül e-mailt.', 'error');
+                }
+            } catch (err) {
+                setContactStatus('Nem sikerült elküldeni az üzenetet. Ellenőrizze az internetkapcsolatot, és próbálja újra.', 'error');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHTML;
+                }
+                if (window.lucide) window.lucide.createIcons();
+            }
+        });
+    }
+
+    // 12. Kosár / megrendelés rendszer
+    const CALC_CONFIG = {
+        'sticker-calculator': { title: 'Matrica rendelés', dimsLabel: 'Szélesség × Magasság', unit: 'cm', width: 'calc-width', height: 'calc-height', qty: 'calc-qty', area: 'calc-area', price: 'calc-result', qtyLabel: 'Kívánt darabszám', showArea: true },
+        'molino-calculator': { title: 'Molinó rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'ml-width', height: 'ml-height', qty: 'ml-qty', area: 'ml-area', price: 'ml-result', qtyLabel: 'Kívánt darabszám', showArea: true },
+        'lf-calculator': { title: 'Plakát rendelés', dimsLabel: 'Hosszúság × Szélesség', unit: 'cm', width: 'lf-width', height: 'lf-height', qty: 'lf-qty', area: 'lf-area', price: 'lf-result', qtyLabel: 'Kívánt darabszám', showArea: true },
+        'bp-calculator': { title: 'Tervrajz (papír) rendelés', dimsLabel: 'Szélesség × Hossz', unit: 'm', width: 'bp-width', height: 'bp-height', qty: 'bp-qty', area: null, price: 'bp-result', qtyLabel: 'Példányszám', showArea: false },
+        'bp-weather-calculator': { title: 'Tervrajz (időjárásálló) rendelés', dimsLabel: 'Szélesség × Hossz', unit: 'm', width: 'bp-w-width', height: 'bp-w-height', qty: 'bp-w-qty', area: null, price: 'bp-w-result', qtyLabel: 'Példányszám', showArea: false }
+    };
+
+    const cart = [];
+    let cartSeq = 0;
+    let msgAutoFill = true;
+
+    const cartPanel = document.getElementById('cart-panel');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+    const cartFab = document.getElementById('cart-fab');
+    const cartFabCount = document.getElementById('cart-fab-count');
+    const cartNavCount = document.getElementById('cart-nav-count');
+    const checkoutSummaryEl = document.getElementById('checkout-summary');
+    const checkoutTotalEl = document.getElementById('checkout-total');
+    const msgField = document.getElementById('cf-msg');
+
+    function fmtInt(n) { return Math.round(n).toLocaleString('hu-HU'); }
+    function parseNum(txt) { return parseInt(String(txt).replace(/[^\d]/g, ''), 10) || 0; }
+    function parseFloatSafe(v) { const n = parseFloat(v); return isNaN(n) ? 0 : n; }
+
+    function readCalc(formId) {
+        const c = CALC_CONFIG[formId];
+        if (!c) return null;
+        const wEl = document.getElementById(c.width);
+        const hEl = document.getElementById(c.height);
+        const qEl = document.getElementById(c.qty);
+        const w = wEl ? parseFloatSafe(wEl.value) : 0;
+        const h = hEl ? parseFloatSafe(hEl.value) : 0;
+        const q = qEl ? (parseInt(qEl.value, 10) || 0) : 0;
+        const priceEl = document.getElementById(c.price);
+        const price = priceEl ? parseNum(priceEl.textContent) : 0;
+        let areaTxt = '';
+        if (c.showArea && c.area) {
+            const aEl = document.getElementById(c.area);
+            if (aEl) areaTxt = parseFloatSafe(aEl.textContent).toFixed(2);
+        }
+        return { cfg: c, w: w, h: h, q: q, price: price, areaTxt: areaTxt };
+    }
+
+    function itemMeta(x) {
+        const parts = [x.dims, x.qty + ' db'];
+        if (x.showArea && x.area) parts.push(x.area + ' m²');
+        return parts.join(' · ');
+    }
+
+    function cartTotal() { return cart.reduce(function (s, x) { return s + (x.price || 0); }, 0); }
+
+    function buildOrderText() {
+        if (cart.length === 0) return '';
+        const blocks = cart.map(function (x) {
+            const lines = [x.title + ':'];
+            lines.push(x.dimsLabel + ': ' + x.dims);
+            lines.push(x.qtyLabel + ': ' + x.qty + ' db');
+            if (x.showArea && x.area) lines.push('Teljes négyzetméter: ' + x.area + ' m²');
+            lines.push('Becsült ár: ' + fmtInt(x.price) + ' Ft');
+            return lines.join('\n');
+        });
+        let txt = blocks.join('\n\n');
+        if (cart.length > 1) txt += '\n\nBecsült összesen: ' + fmtInt(cartTotal()) + ' Ft';
+        return txt;
+    }
+
+    function renderCart(newId) {
+        const n = cart.length;
+        const total = cartTotal();
+        if (cartFab) cartFab.hidden = (n === 0);
+        if (cartFabCount) cartFabCount.textContent = n;
+        if (cartNavCount) { cartNavCount.style.display = n ? 'inline-flex' : 'none'; cartNavCount.textContent = n; }
+        if (cartTotalEl) cartTotalEl.textContent = fmtInt(total) + ' Ft';
+        if (checkoutTotalEl) checkoutTotalEl.textContent = fmtInt(total) + ' Ft';
+
+        if (cartItemsEl) {
+            if (n === 0) {
+                cartItemsEl.innerHTML = '<p class="cart__empty">A kosár üres.<br>Számoljon ki egy méretet a kalkulátorban, majd kattintson a „Megrendelem” gombra.</p>';
+            } else {
+                cartItemsEl.innerHTML = cart.map(function (x) {
+                    return '<div class="cart__item' + (x.id === newId ? ' new' : '') + '" data-id="' + x.id + '">' +
+                        '<div class="cart__item-main">' +
+                        '<span class="cart__item-title">' + x.title + '</span>' +
+                        '<span class="cart__item-meta">' + itemMeta(x) + '</span>' +
+                        '<span class="cart__item-price">Becsült ár: ' + fmtInt(x.price) + ' Ft</span>' +
+                        '</div>' +
+                        '<button type="button" class="cart__item-remove" data-remove="' + x.id + '" aria-label="Tétel törlése">&times;</button>' +
+                        '</div>';
+                }).join('');
+            }
+        }
+
+        if (checkoutSummaryEl) {
+            if (n === 0) {
+                checkoutSummaryEl.innerHTML = '<p class="checkout__empty">A kosár még üres. Használja a fenti kalkulátorokat, és kattintson a „Megrendelem” gombra — a tételek itt jelennek meg. Ha csak üzenetet küldene, töltse ki az űrlapot.</p>';
+            } else {
+                checkoutSummaryEl.innerHTML = cart.map(function (x) {
+                    return '<div class="co-item">' +
+                        '<span class="co-item__t">' + x.title + '</span>' +
+                        '<span class="co-item__m">' + itemMeta(x) + '</span>' +
+                        '<span class="co-item__p">Becsült ár: ' + fmtInt(x.price) + ' Ft</span>' +
+                        '</div>';
+                }).join('');
+            }
+        }
+
+        if (msgAutoFill && msgField) msgField.value = buildOrderText();
+    }
+
+    function bump(el) { if (!el) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+    function openCart() { if (cartPanel) { cartPanel.classList.add('open'); cartPanel.setAttribute('aria-hidden', 'false'); } if (cartOverlay) cartOverlay.classList.add('open'); }
+    function closeCart() { if (cartPanel) { cartPanel.classList.remove('open'); cartPanel.setAttribute('aria-hidden', 'true'); } if (cartOverlay) cartOverlay.classList.remove('open'); }
+
+    function flyToCart(startEl) {
+        if (!startEl || !cartFab || cartFab.hidden) return;
+        const s = startEl.getBoundingClientRect();
+        const t = cartFab.getBoundingClientRect();
+        const sx = s.left + s.width / 2, sy = s.top + s.height / 2;
+        const dot = document.createElement('span');
+        dot.className = 'fly-dot';
+        dot.style.left = sx + 'px';
+        dot.style.top = sy + 'px';
+        document.body.appendChild(dot);
+        void dot.offsetWidth;
+        dot.style.transform = 'translate(' + ((t.left + t.width / 2) - sx) + 'px,' + ((t.top + t.height / 2) - sy) + 'px) scale(.25)';
+        dot.style.opacity = '.25';
+        setTimeout(function () { dot.remove(); }, 700);
+    }
+
+    function flashInvalid(btn) {
+        if (!btn || !btn.parentElement) return;
+        let hint = btn.parentElement.querySelector('.order-hint');
+        if (!hint) {
+            hint = document.createElement('p');
+            hint.className = 'order-hint warn';
+            btn.parentElement.appendChild(hint);
+        }
+        hint.textContent = 'Adja meg a méretet és a darabszámot a megrendeléshez.';
+        hint.classList.remove('hidden');
+        clearTimeout(hint._t);
+        hint._t = setTimeout(function () { hint.classList.add('hidden'); }, 4000);
+    }
+
+    function addToCart(formId, sourceBtn) {
+        const r = readCalc(formId);
+        if (!r) return;
+        if (!(r.w > 0 && r.h > 0 && r.q > 0 && r.price > 0)) { flashInvalid(sourceBtn); return; }
+        const item = {
+            id: ++cartSeq,
+            title: r.cfg.title,
+            dimsLabel: r.cfg.dimsLabel,
+            dims: r.w + ' × ' + r.h + ' ' + r.cfg.unit,
+            qtyLabel: r.cfg.qtyLabel,
+            qty: r.q,
+            showArea: r.cfg.showArea,
+            area: r.areaTxt,
+            price: r.price
+        };
+        cart.push(item);
+        renderCart(item.id);
+        flyToCart(sourceBtn);
+        bump(cartFab);
+        setTimeout(openCart, 480);
+    }
+
+    function removeFromCart(id) {
+        const i = cart.findIndex(function (x) { return x.id === id; });
+        if (i > -1) { cart.splice(i, 1); renderCart(); }
+    }
+
+    // Kalkulátor „Megrendelem" gombok bekötése
+    document.querySelectorAll('a.cta.cta--block').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            const form = btn.closest('form');
+            if (form && CALC_CONFIG[form.id]) {
+                e.preventDefault();
+                addToCart(form.id, btn);
+            }
+        });
+    });
+
+    const cartCloseBtn = document.getElementById('cart-close');
+    const cartCheckoutBtn = document.getElementById('cart-checkout');
+    const cartNavBtn = document.getElementById('cart-nav');
+    if (cartCloseBtn) cartCloseBtn.addEventListener('click', closeCart);
+    if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+    if (cartFab) cartFab.addEventListener('click', openCart);
+    if (cartNavBtn) cartNavBtn.addEventListener('click', openCart);
+    if (cartItemsEl) cartItemsEl.addEventListener('click', function (e) {
+        const rm = e.target.closest('[data-remove]');
+        if (rm) removeFromCart(parseInt(rm.getAttribute('data-remove'), 10));
+    });
+
+    if (cartCheckoutBtn) cartCheckoutBtn.addEventListener('click', function () {
+        if (msgField && cart.length) { msgField.value = buildOrderText(); msgAutoFill = true; }
+        closeCart();
+        const target = document.getElementById('contact-form');
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(function () { const nm = document.getElementById('cf-name'); if (nm) nm.focus({ preventScroll: true }); }, 600);
+    });
+
+    if (msgField) msgField.addEventListener('input', function () { msgAutoFill = false; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCart(); });
+
+    renderCart();
+
     if (window.lucide) {
         window.lucide.createIcons();
     }
